@@ -16,8 +16,8 @@ body {
 
 .pen-title h1 {
 	margin: 0 0 20px;
-	font-size: 70px;
-	font-weight: 400;
+	font-size: 48px;
+	font-weight: 300;
 }
 
 .pen-title span {
@@ -38,7 +38,7 @@ body {
 .form-module {
 	position: relative;
 	background: #ffffff;
-	max-width: 320px;
+	max-width: 800px;
 	width: 100%;
 	border-top: 5px solid #33b5e5;
 	-webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
@@ -115,6 +115,9 @@ body {
 	box-sizing: border-box;
 	font-size: 14px;
 	line-height: 1;
+	width: 100%;
+	overflow: auto;
+	word-break: break-all;
 }
 
 .form-module textarea:focus {

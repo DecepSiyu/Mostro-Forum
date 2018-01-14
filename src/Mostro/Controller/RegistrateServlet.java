@@ -9,11 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- * Servlet implementation class LoginServlet
- */
-@WebServlet("/LoginServlet")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/RegistrateServlet")
+public class RegistrateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String successPage = "welcome.jsp";
 	private static final String failPage = "login.jsp";
@@ -21,7 +18,7 @@ public class LoginServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public LoginServlet() {
+	public RegistrateServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -43,34 +40,30 @@ public class LoginServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		String user = request.getParameter("usrname");
 		String passwd = request.getParameter("passwd");
 
-		login(request, response, user, passwd);
-
+		registrate(request, response, user, passwd);
 	}
 
-	public void login(HttpServletRequest request, HttpServletResponse response, String username, String passwd)
+	public void registrate(HttpServletRequest request, HttpServletResponse response, String username, String passwd)
 			throws IOException {
 		HttpSession session = request.getSession();
 		session.setAttribute("error", "");
 		session.setAttribute("message", "");
-		if (username.equals("mostro") && passwd.equals("123")) {
-			session.setAttribute("user", username);
-			System.out.println(username + " login");
-			response.sendRedirect(successPage);
+		if (username.equals("")) {
+			session.setAttribute("error", "用户名不能为空");
+		} else if (passwd.equals("")) {
+			session.setAttribute("error", "密码不能为空");
+		} else if (false) {
+			// TODO 重名
 		} else {
-			if (username.equals("")) {
-				session.setAttribute("error", "请输入用户名");
-			} else if (passwd.equals("")) {
-				session.setAttribute("error", "请输入密码");
-			} else {// TODO 密码错误
-				session.setAttribute("error", "密码错误");
-			}
-			response.sendRedirect(failPage);
+			System.out.println("new user " + username + " registrate");
+			session.setAttribute("user", username);
+			response.sendRedirect(successPage);
 		}
 	}
-
 }

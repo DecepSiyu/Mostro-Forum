@@ -11,7 +11,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>主页</title>
+<title>新帖发布</title>
 
 <!-- Bootstrap Core CSS -->
 <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -45,20 +45,18 @@
 </head>
 
 <body>
-	<!-- Navigation -->
 	<%@ include file="navigation.jsp"%>
 
 	<!-- Page Header -->
 	<header class="intro-header"
-		style="background-image: url('img/home-bg.jpg')">
+		style="background-image: url('img/contact-bg.jpg')">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
-				<div class="site-heading">
-					<h1>
-						欢迎回来，${user}
-					</h1>
-					<span class="subheading">一个为企业提供的论坛</span>
+				<div class="page-heading">
+					<h1>发布新帖</h1>
+					<hr class="small">
+					<span class="subheading">请开始您的创作</span>
 				</div>
 			</div>
 		</div>
@@ -69,74 +67,33 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
-				<div class="post-preview">
-					<a href="#">
-						<h2 class="post-title">标题</h2>
-						<h3 class="post-subtitle">子标题</h3>
-					</a>
-					<p class="post-meta">
-						梗概
-						<a href="#">作者
-						</a>日期
-					</p>
-				</div>
-				<hr>
-				<div class="post-preview">
-					<a href="#">
-						<h2 class="post-title">标题</h2>
-						<h3 class="post-subtitle">子标题</h3>
-					</a>
-					<p class="post-meta">
-						梗概
-						<a href="#">作者
-						</a>日期
-					</p>
-				</div>
-				<hr>
-				<div class="post-preview">
-					<a href="#">
-						<h2 class="post-title">标题</h2>
-						<h3 class="post-subtitle">子标题</h3>
-					</a>
-					<p class="post-meta">
-						梗概
-						<a href="#">作者
-						</a>日期
-					</p>
-				</div>
-				<hr>
-				<div class="post-preview">
-					<a href="#">
-						<h2 class="post-title">标题</h2>
-						<h3 class="post-subtitle">子标题</h3>
-					</a>
-					<p class="post-meta">
-						梗概
-						<a href="#">作者
-						</a>日期
-					</p>
-				</div>
-				<hr>
-				<!-- Pager -->
-				<div class="clearfix">
-
-					<a class="btn btn-secondary float-right" href="#">下一页 &rarr;</a> <a
-						class="btn btn-secondary float-right" href="#">&larr;上一页</a>
-				</div>
+				<form method="post" action="PublishServlet">
+					<div class="control-group">
+						<div class="form-group floating-label-form-group controls">
+							<label>标题</label> <input type="text" class="form-control"
+								placeholder="标题" name="title">
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="form-group floating-label-form-group controls">
+							<label>正文</label>
+							<textarea class="form-control" placeholder="正文" name="content"></textarea>
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<span><font size="2" color="gray">${error}</font> </span> <br>
+					<div id="success"></div>
+					<div class="form-group">
+						<button type="submit" name="submit" value="publish"
+							class="btn btn-secondary">发布</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
 
 	<hr>
-
-	<!-- Footer -->
-	<footer>
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1"></div>
-		</div>
-	</div>
-	</footer>
 
 	<!-- jQuery Version 3.1.1 -->
 	<script src="lib/jquery/jquery.js"></script>
@@ -147,10 +104,13 @@
 	<!-- Bootstrap Core JavaScript -->
 	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
 
+	<!-- Contact Form JavaScript -->
+	<script src="js/jqBootstrapValidation.js"></script>
+	<script src="js/contact_me.js"></script>
+
 	<!-- Theme JavaScript -->
 	<script src="js/clean-blog.min.js"></script>
 
 </body>
 
 </html>
-

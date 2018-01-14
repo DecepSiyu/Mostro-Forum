@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
 <meta charset="UTF-8">
@@ -19,6 +19,14 @@
 
 
 <body>
+
+	<%
+		String username = (String)session.getAttribute("user");
+		if (username != null) {
+			System.out.println(username + " logout");
+			session.setAttribute("user", null);
+		}
+	%>
 	<div class="pen-title">
 		<h1>欢迎</h1>
 	</div>
@@ -39,10 +47,10 @@
 		</div>
 		<div class="form">
 			<h2>创建一个账号</h2>
-			<form>
-				<input type="text" placeholder="用户名" /> <input type="password"
-					placeholder="密码" />
-				<button>注册</button>
+			<form method="post" action="RegistrateServlet">
+				<input type="text" placeholder="用户名" name="usrname" /> <input
+					type="password" placeholder="密码" name="passwd" /><span>${error}</span>
+				<button type="submit" name="submit" value="registrate">注册</button>
 			</form>
 		</div>
 	</div>
@@ -51,3 +59,5 @@
 	<script src="js/index.js"></script>
 </body>
 </html>
+
+
