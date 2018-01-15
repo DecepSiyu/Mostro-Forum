@@ -1,4 +1,4 @@
-package Mostro.Controller;
+package com.controller;
 
 import java.io.IOException;
 
@@ -9,19 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- * Servlet implementation class LoginServlet
- */
-@WebServlet("/LoginServlet")
-public class LoginServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private static final String successPage = "welcome.jsp";
-	private static final String failPage = "login.jsp";
-
+@WebServlet("/PublishServlet")
+public class PublishServlet extends HttpServlet {
 	/**
-	 * @see HttpServlet#HttpServlet()
+	 * 
 	 */
-	public LoginServlet() {
+	private static final long serialVersionUID = 1L;
+	private static final String successPage = "#";
+	private static final String failPage = "post.jsp";
+
+	public PublishServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -45,31 +42,23 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		String user = request.getParameter("usrname");
-		String passwd = request.getParameter("passwd");
-
-		login(request, response, user, passwd);
-
-	}
-
-	public void login(HttpServletRequest request, HttpServletResponse response, String username, String passwd)
-			throws IOException {
+		String title = request.getParameter("title");
+		String content = request.getParameter("content");
 		HttpSession session = request.getSession();
 		session.setAttribute("error", "");
 		session.setAttribute("message", "");
-		if (username.equals("mostro") && passwd.equals("123")) {
-			session.setAttribute("user", username);
-			System.out.println(username + " login");
-			response.sendRedirect(successPage);
-		} else {
-			if (username.equals("")) {
-				session.setAttribute("error", "请输入用户名");
-			} else if (passwd.equals("")) {
-				session.setAttribute("error", "请输入密码");
-			} else {// TODO 密码错误
-				session.setAttribute("error", "密码错误");
-			}
+		if (title.equals("")) {
+			session.setAttribute("error", "标题不能为空");
+			session.setAttribute("content", content);
 			response.sendRedirect(failPage);
+		} else if (content.equals("")) {
+			session.setAttribute("error", "正文不能为空");
+			session.setAttribute("title", title);
+			response.sendRedirect(failPage);
+		} else {
+			System.out.println("**************title**************\n" + title);
+			System.out.println("**************content**************\n" + content);
+			response.sendRedirect(successPage);// TODO:跳转到哪？
 		}
 	}
 
