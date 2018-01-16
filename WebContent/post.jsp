@@ -66,7 +66,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
-				<form method="post" action="PublishServlet">
+				<form method="post" action="PublishServlet" style="display: ${hiddens}">
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
 							<label>标题</label> <input type="text" class="form-control"
@@ -84,7 +84,7 @@
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
 							<label>正文</label>
-							<textarea rows=10
+							<textarea rows=10 cols=60
 								style='overflow: scroll; overflow-y: hidden; overflow-x: hidden'
 								onfocus="window.activeobj=this;this.clock=setInterval(function(){activeobj.style.height=activeobj.scrollHeight+'px';},200);"
 								onblur="clearInterval(this.clock);" placeholder="正文"
@@ -99,6 +99,14 @@
 							class="btn btn-secondary">发布</button>
 					</div>
 				</form>
+				
+				<form style="display: none}"><div class="control-group">
+						<div class="form-group floating-label-form-group controls">
+							<label>提交成功</label> <input type="text" class="form-control"
+								placeholder="提交成功" name="title" disabled="disabled">
+							<p class="help-block text-danger"></p>
+						</div>
+					</div></form>
 			</div>
 		</div>
 	</div>

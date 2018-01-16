@@ -13,7 +13,7 @@
 			response.sendRedirect("login.jsp");
 		}
 
-		session.setAttribute("is_admin", false);
+		//session.setAttribute("is_admin", false);
 	%>
 	<!-- Navigation -->
 	<nav class="navbar fixed-top navbar-toggleable-md navbar-light"
@@ -36,10 +36,10 @@
 					href="information.jsp">我的信息</a></li>
 
 				<li class="nav-item"
-					style="display: <%if ((boolean) session.getAttribute("is_admin"))
+					style="display: <%/*if ((boolean) session.getAttribute("is_admin"))
 				out.print("block");
 			else//如果把is_admin设为true，就会显示信息查询这一栏
-				out.print("none");%>"><a
+				out.print("none");*/%>"><a
 					class="nav-link page-scroll" href="#.jsp">信息查询</a></li>
 
 				<li class="nav-item"><a class="nav-link page-scroll"

@@ -15,7 +15,7 @@ public class PublishServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final String successPage = "#";
+	private static final String successPage = "post.jsp";
 	private static final String failPage = "post.jsp";
 
 	public PublishServlet() {
@@ -43,6 +43,7 @@ public class PublishServlet extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		String title = request.getParameter("title");
+		String plate = request.getParameter("plate");
 		String content = request.getParameter("content");
 		HttpSession session = request.getSession();
 		session.setAttribute("error", "");
@@ -57,7 +58,10 @@ public class PublishServlet extends HttpServlet {
 			response.sendRedirect(failPage);
 		} else {
 			System.out.println("**************title**************\n" + title);
+			System.out.println("**************plate**************\n" + plate);
 			System.out.println("**************content**************\n" + content);
+			session.setAttribute("hidden", "none");//隐藏编辑界面
+			session.setAttribute("show", "block");//显示成功界面
 			response.sendRedirect(successPage);// TODO:跳转到哪？
 		}
 	}
