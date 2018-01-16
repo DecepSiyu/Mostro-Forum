@@ -40,7 +40,7 @@
 				out.print("block");
 			else//如果把is_admin设为true，就会显示信息查询这一栏
 				out.print("none");*/%>"><a
-					class="nav-link page-scroll" href="#.jsp">信息查询</a></li>
+					class="nav-link page-scroll" href="search.jsp">信息查询</a></li>
 
 				<li class="nav-item"><a class="nav-link page-scroll"
 					href="login.jsp">退出</a></li>

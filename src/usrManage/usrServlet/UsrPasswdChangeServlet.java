@@ -2,7 +2,6 @@ package usrManage.usrServlet;
 
 import java.io.IOException;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
 
 import javax.servlet.ServletException;
@@ -14,7 +13,14 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/UsrPasswdChangeServlet")
 
-public class UsrPasswdChangeServlet extends HttpServlet{
+public class UsrPasswdChangeServlet extends HttpServlet {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static final String successPage = "information.jsp";
+	private static final String failPage = "information.jsp";
 
 	public UsrPasswdChangeServlet() {
 		super();
@@ -38,36 +44,52 @@ public class UsrPasswdChangeServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		String usrname= request.getParameter("usrname");
-		String passwd= request.getParameter("passwd");
-		//Ò³Ãæ´úÂë£º£¨ĞŞ¸ÄÃÜÂëÒ³Ãæ£©
-		
-		//
-		passwdChange(usrname, passwd);
-	}
-	
-	public void passwdChange(String usrname,String passwd)
-	{
-		String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";  
-		String url = "jdbc:sqlserver://localhost:1433; DatabaseName = BBSM";  
-		String DBUSER="Ting";
-		String PASSWORD="zt18798859427";
-		try{
-			Class.forName(driverClass);
-		    java.sql.Connection cn=DriverManager.getConnection(url,DBUSER,PASSWORD);
-			Statement stmt=cn.createStatement();
-		    String sql="update user_info set password=\'"+passwd+"\'"+
-			"where usrname=\'"+usrname+"\'";
-		   stmt.execute(sql);
-		   cn.close();
+		HttpSession session = request.getSession();
+		String old_passwd_input = request.getParameter("old-passwd");
+		String new_passwd = request.getParameter("new-passwd");
+		String new_passwd_again = request.getParameter("new-passwd-again");
+		String usrname = (String) session.getAttribute("user");
+		String old_passwd = "123"; // TODO: æŸ¥æ‰¾è€å¯†ç 
+
+		session.setAttribute("error", "");
+		session.setAttribute("message", "");
+
+		if (old_passwd_input.equals(old_passwd)) {
+			System.out.println(usrname + " new password: " + new_passwd);
+			session.setAttribute("message", "å¯†ç ä¿®æ”¹æˆåŠŸ");
+
+			if (new_passwd.equals(new_passwd_again)) {
+				// passwdChange(usrname, passwd);
+				response.sendRedirect(successPage);
+			} else {
+				session.setAttribute("error", "ä¸¤æ¬¡è¾“å…¥å¯†ç ä¸ä¸€è‡´");
+				response.sendRedirect(failPage);
+			}
+
+		} else {
+			session.setAttribute("error", "å¯†ç é”™è¯¯");
+			response.sendRedirect(failPage);
 		}
-		catch(Exception ex){
-		System.out.println(ex.getMessage());
-		System.out.println("Á¬½ÓÒì³£");
-		ex.printStackTrace();
+
+	}
+
+	public void passwdChange(String usrname, String passwd) {
+		String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+		String url = "jdbc:sqlserver://localhost:1433; DatabaseName = BBSM";
+		String DBUSER = "Ting";
+		String PASSWORD = "zt18798859427";
+		try {
+			Class.forName(driverClass);
+			java.sql.Connection cn = DriverManager.getConnection(url, DBUSER, PASSWORD);
+			Statement stmt = cn.createStatement();
+			String sql = "update user_info set password=\'" + passwd + "\'" + "where usrname=\'" + usrname + "\'";
+			stmt.execute(sql);
+			cn.close();
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+			ex.printStackTrace();
 		}
 
 	}

@@ -66,7 +66,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
-				<form method="post" action="PublishServlet" style="display: ${hiddens}">
+				<form method="post" action="PublishServlet">
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
 							<label>标题</label> <input type="text" class="form-control"
@@ -92,21 +92,13 @@
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
-					<span><font size="2" color="gray">${error}</font> </span> <br>
+					<span><font size="2" color="gray">${error}${message}</font> </span> <br>
 					<div id="success"></div>
 					<div class="form-group">
 						<button type="submit" name="submit" value="publish"
 							class="btn btn-secondary">发布</button>
 					</div>
 				</form>
-				
-				<form style="display: none}"><div class="control-group">
-						<div class="form-group floating-label-form-group controls">
-							<label>提交成功</label> <input type="text" class="form-control"
-								placeholder="提交成功" name="title" disabled="disabled">
-							<p class="help-block text-danger"></p>
-						</div>
-					</div></form>
 			</div>
 		</div>
 	</div>

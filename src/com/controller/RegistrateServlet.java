@@ -2,7 +2,6 @@ package com.controller;
 
 import java.io.IOException;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
 
 import javax.servlet.ServletException;
@@ -47,22 +46,23 @@ public class RegistrateServlet extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		String user = request.getParameter("usrname");
-		String passwd = request.getParameter("passwd");
+		String passwd = request.getParameter("passwd_1");
+		String passwd_again = request.getParameter("passwd_2");
 
-		registrate(request, response, user, passwd);
+		registrate(request, response, user, passwd, passwd_again);
 	}
 
-	public void registrate(HttpServletRequest request, HttpServletResponse response, String username, String passwd)
-			throws IOException {
+	public void registrate(HttpServletRequest request, HttpServletResponse response, String username, String passwd,
+			String passwd_again) throws IOException {
 		HttpSession session = request.getSession();
 		session.setAttribute("error", "");
 		session.setAttribute("message", "");
 		if (username.equals("")) {
-			session.setAttribute("error", "ÓÃ»§Ãû²»ÄÜÎª¿Õ");
+			session.setAttribute("error", "ç”¨æˆ·åä¸èƒ½ä¸ºç©º");
 		} else if (passwd.equals("")) {
-			session.setAttribute("error", "ÃÜÂë²»ÄÜÎª¿Õ");
-		} else if (false) {
-			// TODO ÖØÃû
+			session.setAttribute("error", "å¯†ç ä¸èƒ½ä¸ºç©º");
+		} else if (passwd.equals(passwd_again)) {
+			session.setAttribute("error", "ä¸¤æ¬¡è¾“å…¥å¯†ç ä¸ä¸€è‡´");
 		} else {
 			System.out.println("new user " + username + " registrate");
 			session.setAttribute("user", username);
@@ -70,27 +70,22 @@ public class RegistrateServlet extends HttpServlet {
 			response.sendRedirect(successPage);
 		}
 	}
-	
-	public void storeRegInfo(String usrname, String password)
-	{
-		String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";  
-		String url = "jdbc:sqlserver://localhost:1433; DatabaseName = BBSM";  
-		String DBUSER="Ting";
-		String PASSWORD="zt18798859427";
-		try{
+
+	public void storeRegInfo(String usrname, String password) {
+		String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+		String url = "jdbc:sqlserver://localhost:1433; DatabaseName = BBSM";
+		String DBUSER = "Ting";
+		String PASSWORD = "zt18798859427";
+		try {
 			Class.forName(driverClass);
-		    java.sql.Connection cn=DriverManager.getConnection(url,DBUSER,PASSWORD);
-			Statement stmt=cn.createStatement();
-		    String sql="insert into usr_info values (\'"+usrname+"\' , \'"+password+"\', NULL,\'ÄĞ\',NULL)";
-		   stmt.execute(sql);
-		   cn.close();
-		}
-		catch(Exception ex){
-		System.out.println(ex.getMessage());
-		System.out.println("Á¬½ÓÒì³£");
-		ex.printStackTrace();
+			java.sql.Connection cn = DriverManager.getConnection(url, DBUSER, PASSWORD);
+			Statement stmt = cn.createStatement();
+			String sql = "insert into usr_info values (\'" + usrname + "\' , \'" + password + "\', NULL,\'ï¿½ï¿½\',NULL)";
+			stmt.execute(sql);
+			cn.close();
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+			ex.printStackTrace();
 		}
 	}
 }
-
-

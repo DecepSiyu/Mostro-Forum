@@ -1,7 +1,9 @@
 package com.controller;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 
 /**
  * Servlet implementation class LoginServlet
@@ -54,39 +55,32 @@ public class LoginServlet extends HttpServlet {
 
 	}
 
-	public static boolean checkLogin(String usrname, String password)
-	{
-		String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";  
-		String url = "jdbc:sqlserver://localhost:1433; DatabaseName = BBSM";  
-		String DBUSER="Ting";
-		String PASSWORD="zt18798859427";
-		try{
+	public static boolean checkLogin(String usrname, String password) {
+		String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+		String url = "jdbc:sqlserver://localhost:1433; DatabaseName = BBSM";
+		String DBUSER = "Ting";
+		String PASSWORD = "zt18798859427";
+		try {
 			Class.forName(driverClass);
-		    java.sql.Connection cn=DriverManager.getConnection(url,DBUSER,PASSWORD);
-			Statement stmt=cn.createStatement();
-		    String sql="SELECT usrname, password from usr_info where usrname=\'"+usrname+"\'";
-		    ResultSet rs=stmt.executeQuery(sql);
-		    while(rs.next()){
-		        String db_usrname=rs.getString("usrname").trim();
-		        String db_password=rs.getString("password").trim();
-		        if(usrname.equals(db_usrname) && password.equals(db_password))
-		        {
-				    System.out.println("Æ¥Åä³É¹¦");		        	
-		        	return true;
-		        }
-		        //out.println(sno+","+sname+"<br>");
-		    }
-		    System.out.println("Êı¾İ¿âÁ´½Ó³É¹¦");
-		    
-		    rs.close();//¹Ø±Õ½á¹û¼¯
-		    cn.close();//¹Ø±Õ²Ù×÷
-		    return false;
-		}
-		catch(Exception ex){
-		System.out.println(ex.getMessage());
-		System.out.println("Á¬½ÓÒì³£");
-		ex.printStackTrace();
-		return false;
+			java.sql.Connection cn = DriverManager.getConnection(url, DBUSER, PASSWORD);
+			Statement stmt = cn.createStatement();
+			String sql = "SELECT usrname, password from usr_info where usrname=\'" + usrname + "\'";
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				String db_usrname = rs.getString("usrname").trim();
+				String db_password = rs.getString("password").trim();
+				if (usrname.equals(db_usrname) && password.equals(db_password)) {
+					return true;
+				}
+			}
+
+			rs.close();
+			cn.close();
+			return false;
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+			ex.printStackTrace();
+			return false;
 		}
 
 	}
@@ -96,20 +90,20 @@ public class LoginServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("error", "");
 		session.setAttribute("message", "");
-		if (checkLogin(username, passwd)) {
+		if (username.equals("mostro") && passwd.equals("123")) {// TODO æ›¿æ¢
 			session.setAttribute("user", username);
 			System.out.println(username + " login");
 			response.sendRedirect(successPage);
 		} else {
 			if (username.equals("")) {
-				session.setAttribute("error", "ÇëÊäÈëÓÃ»§Ãû");
+				session.setAttribute("error", "ç”¨æˆ·åä¸èƒ½ä¸ºç©º");
 			} else if (passwd.equals("")) {
-				session.setAttribute("error", "ÇëÊäÈëÃÜÂë");
-			} else {// TODO ÃÜÂë´íÎó
-				session.setAttribute("error", "ÓÃ»§Ãû»òÃÜÂë´íÎó");
+				session.setAttribute("error", "å¯†ç ä¸èƒ½ä¸ºç©º");
+			} else {
+				session.setAttribute("error", "ç”¨æˆ·åã€å¯†ç ä¸åŒ¹é…");
 			}
 			response.sendRedirect(failPage);
 		}
 	}
-	
+
 }

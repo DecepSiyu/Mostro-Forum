@@ -49,20 +49,20 @@ public class PublishServlet extends HttpServlet {
 		session.setAttribute("error", "");
 		session.setAttribute("message", "");
 		if (title.equals("")) {
-			session.setAttribute("error", "标题不能为空");
+			session.setAttribute("error", "鏍囬涓嶈兘涓虹┖");
 			session.setAttribute("content", content);
 			response.sendRedirect(failPage);
 		} else if (content.equals("")) {
-			session.setAttribute("error", "正文不能为空");
+			session.setAttribute("error", "姝ｆ枃涓嶈兘涓虹┖");
 			session.setAttribute("title", title);
 			response.sendRedirect(failPage);
 		} else {
 			System.out.println("**************title**************\n" + title);
 			System.out.println("**************plate**************\n" + plate);
 			System.out.println("**************content**************\n" + content);
-			session.setAttribute("hidden", "none");//隐藏编辑界面
-			session.setAttribute("show", "block");//显示成功界面
-			response.sendRedirect(successPage);// TODO:跳转到哪？
+
+			session.setAttribute("message", "鍙戝竷鎴愬姛");
+			response.sendRedirect(successPage);
 		}
 	}
 
