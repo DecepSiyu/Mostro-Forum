@@ -5,7 +5,6 @@
 
 <head>
 
-<meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
@@ -77,8 +76,19 @@
 					</div>
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
+							<label>板块</label> <input type="text" class="form-control"
+								placeholder="板块" name="plate">
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="form-group floating-label-form-group controls">
 							<label>正文</label>
-							<textarea class="form-control" placeholder="正文" name="content"></textarea>
+							<textarea rows=10
+								style='overflow: scroll; overflow-y: hidden; overflow-x: hidden'
+								onfocus="window.activeobj=this;this.clock=setInterval(function(){activeobj.style.height=activeobj.scrollHeight+'px';},200);"
+								onblur="clearInterval(this.clock);" placeholder="正文"
+								name="content"></textarea>
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>

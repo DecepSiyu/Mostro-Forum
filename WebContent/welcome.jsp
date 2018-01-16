@@ -70,7 +70,7 @@
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
 				<div class="post-preview">
-					<a href="#">
+					<a href="passage.jsp">
 						<h2 class="post-title">标题</h2>
 						<h3 class="post-subtitle">子标题</h3>
 					</a>
@@ -82,7 +82,7 @@
 				</div>
 				<hr>
 				<div class="post-preview">
-					<a href="#">
+					<a href="passage.jsp">
 						<h2 class="post-title">标题</h2>
 						<h3 class="post-subtitle">子标题</h3>
 					</a>
@@ -94,7 +94,7 @@
 				</div>
 				<hr>
 				<div class="post-preview">
-					<a href="#">
+					<a href="passage.jsp">
 						<h2 class="post-title">标题</h2>
 						<h3 class="post-subtitle">子标题</h3>
 					</a>
@@ -106,7 +106,7 @@
 				</div>
 				<hr>
 				<div class="post-preview">
-					<a href="#">
+					<a href="passage.jsp">
 						<h2 class="post-title">标题</h2>
 						<h3 class="post-subtitle">子标题</h3>
 					</a>

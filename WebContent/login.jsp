@@ -19,7 +19,6 @@
 
 
 <body>
-
 	<%
 		String username = (String)session.getAttribute("user");
 		if (username != null) {
@@ -48,8 +47,9 @@
 		<div class="form">
 			<h2>创建一个账号</h2>
 			<form method="post" action="RegistrateServlet">
-				<input type="text" placeholder="用户名" name="usrname" /> <input
-					type="password" placeholder="密码" name="passwd" /><span>${error}</span>
+				<input type="text" placeholder="用户名" name="usrname" /><input
+					type="password" placeholder="密码" name="passwd_1" /><input
+					type="password" placeholder="确认密码" name="passwd_2" /><span>${error}</span>
 				<button type="submit" name="submit" value="registrate">注册</button>
 			</form>
 		</div>

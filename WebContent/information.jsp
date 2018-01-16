@@ -11,7 +11,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Clean Blog - Start Bootstrap Theme</title>
+<title>个人信息</title>
 
 <!-- Bootstrap Core CSS -->
 <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -68,18 +68,63 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-					Saepe nostrum ullam eveniet pariatur voluptates odit, fuga atque ea
-					nobis sit soluta odio, adipisci quas excepturi maxime quae totam
-					ducimus consectetur?</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-					Eius praesentium recusandae illo eaque architecto error,
-					repellendus iusto reprehenderit, doloribus, minus sunt. Numquam at
-					quae voluptatum in officia voluptas voluptatibus, minus!</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-					Nostrum molestiae debitis nobis, quod sapiente qui voluptatum,
-					placeat magni repudiandae accusantium fugit quas labore non rerum
-					possimus, corrupti enim modi! Et.</p>
+				<div></div>
+				<div class="form-group">
+					<button id="show-once-button" onclick="diag()"
+						class="btn btn-secondary">修改密码</button>
+				</div>
+
+				<form id="passwd-change" method="post" style="display: none"
+					action="UsrPasswdChangeServlet">
+					<div class="control-group">
+						<div class="form-group floating-label-form-group controls">
+							<label>密码</label> <input type="password" class="form-control"
+								placeholder="输入密码" name="old_passwd">
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="form-group floating-label-form-group controls">
+							<label>新密码</label> <input type="password" class="form-control"
+								placeholder="输入新密码" name="new_passwd">
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<span><font size="2" color="gray">${error}</font> </span> <br>
+					<div></div>
+					<div class="form-group">
+						<button type="submit" name="submit" class="btn btn-secondary">修改密码</button>
+					</div>
+				</form>
+
+				<form id="normal-infochange" method="post" action="PublishServlet">
+					<div class="control-group">
+						<div class="form-group floating-label-form-group controls">
+							<label>邮箱</label> <input type="text" class="form-control"
+								placeholder="邮箱" name="email">
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="form-group floating-label-form-group controls">
+							<label>性别</label> <input type="text" class="form-control"
+								placeholder="性别" name="sex">
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="form-group floating-label-form-group controls">
+							<label>生日</label> <input type="text" class="form-control"
+								placeholder="生日" name="birthday">
+							<p class="help-block text-danger"></p>
+						</div>
+					</div>
+					<span><font size="2" color="gray">${error}</font> </span> <br>
+					<div id="success"></div>
+					<div class="form-group">
+						<button type="submit" name="submit" class="btn btn-secondary">修改</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -98,6 +143,17 @@
 	<!-- Theme JavaScript -->
 	<script src="js/clean-blog.min.js"></script>
 
+	<script type="text/javascript">
+		function diag() {
+			document.getElementById("passwd-change").style.display = "block";
+			document.getElementById("show-once-button").style.display = "none";
+			document.getElementById("normal-infochange").style.display = "none";
+		}
+	</script>
 </body>
 
 </html>
+
+<%
+	
+%>
