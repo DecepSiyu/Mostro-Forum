@@ -1,4 +1,4 @@
-package usrManage.usrServlet;
+package com.usrServlet;
 
 import java.io.IOException;
 import java.sql.DriverManager;
@@ -39,11 +39,11 @@ public class UsrDeletePostServlet extends HttpServlet{
 			throws ServletException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		//»¹²îÒ³Ãæ´úÂë£º
-		//É¾ÌûÊý¾Ý¿â´úÂë£º
+		//ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ë£º
+		//É¾ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ë£º
 	}
 	
-	//²ÎÊý´ý¶¨£¬½öÊµÏÖÁËÊý¾Ý¿âÁ´½Ó¹¦ÄÜ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½Ó¹ï¿½ï¿½ï¿½
 		public void deletePost()
 		{
 			String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";  
@@ -56,13 +56,13 @@ public class UsrDeletePostServlet extends HttpServlet{
 				Statement stmt=cn.createStatement();
 			  //  String sql="SELECT usrname, password from usr_info where usrname=\'"+usrname+"\'";
 				//ResultSet rs=stmt.executeQuery(sql);
-				System.out.println("Êý¾Ý¿âÁ´½Ó³É¹¦");
+				System.out.println("ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½Ó³É¹ï¿½");
 			    
-			    cn.close();//¹Ø±Õ²Ù×÷
+			    cn.close();//ï¿½Ø±Õ²ï¿½ï¿½ï¿½
 			}
 			catch(Exception ex){
 			System.out.println(ex.getMessage());
-			System.out.println("Á¬½ÓÒì³£");
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ì³£");
 			ex.printStackTrace();
 			}
 		}

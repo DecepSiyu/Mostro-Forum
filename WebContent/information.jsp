@@ -108,32 +108,34 @@
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
 							<label>用户名</label> <input type="text" class="form-control"
-								placeholder="${user}" readonly="readonly" name="username">
+								placeholder="用户名：${username}" readonly="readonly"
+								name="username">
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
 							<label>邮箱</label> <input type="text" class="form-control"
-								placeholder="${user_email}" name="email">
+								placeholder="邮箱：${user_email}" name="email">
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
 							<label>性别</label> <input type="text" class="form-control"
-								placeholder="${user_sex}" name="sex">
+								placeholder="性别：${user_sex}" name="sex">
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
 							<label>生日</label> <input type="text" class="form-control"
-								placeholder="${user_birthday}" name="birthday">
+								placeholder="生日：${user_birthday}" name="birthday">
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
-					<span><font size="2" color="gray">${error}${message}</font> </span> <br>
+					<span><font size="2" color="gray">${error}${message}</font>
+					</span> <br>
 					<div id="success"></div>
 					<div class="form-group">
 						<button type="submit" name="submit" class="btn btn-secondary">修改</button>
@@ -168,11 +170,17 @@
 
 </html>
 
+<%@ page language="java"%>
+<%@ page import="com.mysql.jdbc.Driver"%>
+<%@ page import="java.sql.*"%>
+<%@ page import="com.usrBean.*"%>
+
 <%
-	//从数据库中查找
-	session.setAttribute("user_sex", "男");
-	session.setAttribute("user_birthday", "1997-05-15");
-	session.setAttribute("user_email", "616040809@qq.com");
-	session.setAttribute("error","");
-	session.setAttribute("message","");
+	if (user != null) {
+		session.setAttribute("user_sex", user.getSex());
+		session.setAttribute("user_birthday", user.getBirthday());
+		session.setAttribute("user_email", user.getEmail());
+	}
+	session.setAttribute("error", "");
+	session.setAttribute("message", "");
 %>

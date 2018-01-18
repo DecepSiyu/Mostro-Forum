@@ -1,7 +1,6 @@
-package usrManage.usrServlet;
+package com.usrServlet;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
@@ -12,20 +11,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- * Servlet implementation class LoginServlet
- */
-@WebServlet("/UsrUpdateServlet")
+import com.usrBean.User;
 
-public class UsrUpdateServlet extends HttpServlet {
+@WebServlet("/UsrPasswdChangeServlet")
+
+public class UsrPasswdChangeServlet extends HttpServlet {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final String successPage = "information.jsp";
+	private static final String failPage = "information.jsp";
 
-	public UsrUpdateServlet() {
+	public UsrPasswdChangeServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -44,38 +43,48 @@ public class UsrUpdateServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
+		String old_passwd_input = request.getParameter("old-passwd");
+		String new_passwd = request.getParameter("new-passwd");
+		String new_passwd_again = request.getParameter("new-passwd-again");
+		User user = (User) session.getAttribute("user");
 
-		String usrname = (String) session.getAttribute("user");
-		String strofDate = request.getParameter("birthday");// TODO 修改
-		Date birthday = Date.valueOf(strofDate);
-		String sex = request.getParameter("sex");
-		String email = request.getParameter("Email");
+		session.setAttribute("error", "");
+		session.setAttribute("message", "");
 
-		// update(usrname, birthday, sex, email);
+		if (old_passwd_input.equals(user.getPassword())) {
+			if (new_passwd.equals(new_passwd_again)) {
+				System.out.println(user.getUsrname() + " new password: " + new_passwd);
+				passwdChange(user.getUsrname(), new_passwd);
+				session.setAttribute("message", "密码修改成功");
+				response.sendRedirect(successPage);
+			} else {
+				session.setAttribute("error", "两次输入密码不一致");
+				response.sendRedirect(failPage);
+			}
 
-		session.setAttribute("user_email", email);
-		session.setAttribute("user_birthday", birthday.toString());
-		session.setAttribute("user_sex", sex);
+		} else {
+			session.setAttribute("error", "密码错误");
+			response.sendRedirect(failPage);
+		}
 
-		response.sendRedirect(successPage);
 	}
 
-	public void update(String usrname, Date birthday, String sex, String email) {
-		String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-		String url = "jdbc:sqlserver://localhost:1433; DatabaseName = BBSM";
-		String DBUSER = "Ting";
-		String PASSWORD = "zt18798859427";
+	public void passwdChange(String usrname, String passwd) {
+		String driverClass = "com.mysql.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/?user=root";
+		String DBUSER = "root";
+		String PASSWORD = "menhui2012";
 		try {
 			Class.forName(driverClass);
 			java.sql.Connection cn = DriverManager.getConnection(url, DBUSER, PASSWORD);
 			Statement stmt = cn.createStatement();
-			String sql = "update usr_info set sex=\'" + sex + "\' , birthday=\'" + birthday + "\' ,Email=\'" + email
-					+ "\'" + "where usrname=\'" + usrname + "\'";
+			String sql = "UPDATE web_routine.usr_info SET passwd=\'" + passwd + "\' where usrname=\'" + usrname + "\'";
 			stmt.execute(sql);
 			cn.close();
 		} catch (Exception ex) {

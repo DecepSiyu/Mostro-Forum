@@ -45,11 +45,11 @@ public class RegistrateServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		String user = request.getParameter("usrname");
+		String username = request.getParameter("usrname");
 		String passwd = request.getParameter("passwd_1");
 		String passwd_again = request.getParameter("passwd_2");
 
-		registrate(request, response, user, passwd, passwd_again);
+		registrate(request, response, username, passwd, passwd_again);
 	}
 
 	public void registrate(HttpServletRequest request, HttpServletResponse response, String username, String passwd,
@@ -59,28 +59,32 @@ public class RegistrateServlet extends HttpServlet {
 		session.setAttribute("message", "");
 		if (username.equals("")) {
 			session.setAttribute("error", "用户名不能为空");
+			response.sendRedirect(failPage);
 		} else if (passwd.equals("")) {
 			session.setAttribute("error", "密码不能为空");
-		} else if (passwd.equals(passwd_again)) {
+			response.sendRedirect(failPage);
+		} else if (!passwd.equals(passwd_again)) {
 			session.setAttribute("error", "两次输入密码不一致");
+			response.sendRedirect(failPage);
 		} else {
 			System.out.println("new user " + username + " registrate");
-			session.setAttribute("user", username);
+			session.setAttribute("username", username);
 			storeRegInfo(username, passwd);
 			response.sendRedirect(successPage);
 		}
 	}
 
 	public void storeRegInfo(String usrname, String password) {
-		String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-		String url = "jdbc:sqlserver://localhost:1433; DatabaseName = BBSM";
-		String DBUSER = "Ting";
-		String PASSWORD = "zt18798859427";
+		String driverClass = "com.mysql.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/?user=root";
+		String DBUSER = "root";
+		String PASSWORD = "menhui2012";
 		try {
 			Class.forName(driverClass);
 			java.sql.Connection cn = DriverManager.getConnection(url, DBUSER, PASSWORD);
 			Statement stmt = cn.createStatement();
-			String sql = "insert into usr_info values (\'" + usrname + "\' , \'" + password + "\', NULL,\'��\',NULL)";
+			String sql = "insert into web_routine.usr_info (`usrname`, `passwd`,`is_admin`) values (\'" + usrname
+					+ "\',\'" + password + "\',false)";
 			stmt.execute(sql);
 			cn.close();
 		} catch (Exception ex) {

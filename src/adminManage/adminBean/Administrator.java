@@ -1,6 +1,6 @@
 package adminManage.adminBean;
 
-import usrManage.usrBean.User;
+import com.usrBean.User;
 
 public class Administrator extends User{
 

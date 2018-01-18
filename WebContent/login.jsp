@@ -17,12 +17,18 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 
+<%@page import="com.usrBean.User"%>
 
 <body>
 	<%
-		String username = (String)session.getAttribute("user");
+		String username = (String) session.getAttribute("username");
 		if (username != null) {
 			System.out.println(username + " logout");
+			session.setAttribute("username", null);
+		}
+
+		User user = (User) session.getAttribute("user");
+		if (user != null) {
 			session.setAttribute("user", null);
 		}
 	%>

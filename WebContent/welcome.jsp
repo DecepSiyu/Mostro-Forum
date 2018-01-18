@@ -55,9 +55,7 @@
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
 				<div class="site-heading">
-					<h1>
-						欢迎回来，${user}
-					</h1>
+					<h1>欢迎回来，${username}</h1>
 					<span class="subheading">一个为企业提供的论坛</span>
 				</div>
 			</div>
@@ -69,53 +67,23 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+				<%
+					if (posts != null) {
+						for (int i = 0; i < posts.size(); i++) {
+				%>
 				<div class="post-preview">
 					<a href="passage.jsp">
-						<h2 class="post-title">标题</h2>
-						<h3 class="post-subtitle">子标题</h3>
+						<h2 class="post-title"><%=posts.get(i).getTitle()%></h2>
+						<h3 class="post-subtitle"><%=posts.get(i).getContent()%></h3>
 					</a>
 					<p class="post-meta">
-						梗概
-						<a href="#">作者
-						</a>日期
+						梗概 <a href="#">作者 </a>日期
 					</p>
 				</div>
-				<hr>
-				<div class="post-preview">
-					<a href="passage.jsp">
-						<h2 class="post-title">标题</h2>
-						<h3 class="post-subtitle">子标题</h3>
-					</a>
-					<p class="post-meta">
-						梗概
-						<a href="#">作者
-						</a>日期
-					</p>
-				</div>
-				<hr>
-				<div class="post-preview">
-					<a href="passage.jsp">
-						<h2 class="post-title">标题</h2>
-						<h3 class="post-subtitle">子标题</h3>
-					</a>
-					<p class="post-meta">
-						梗概
-						<a href="#">作者
-						</a>日期
-					</p>
-				</div>
-				<hr>
-				<div class="post-preview">
-					<a href="passage.jsp">
-						<h2 class="post-title">标题</h2>
-						<h3 class="post-subtitle">子标题</h3>
-					</a>
-					<p class="post-meta">
-						梗概
-						<a href="#">作者
-						</a>日期
-					</p>
-				</div>
+				<%
+					}
+					}
+				%>
 				<hr>
 				<!-- Pager -->
 				<div class="clearfix">

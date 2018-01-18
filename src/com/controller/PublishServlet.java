@@ -1,6 +1,10 @@
 package com.controller;
 
 import java.io.IOException;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.usrBean.User;
 
 @WebServlet("/PublishServlet")
 public class PublishServlet extends HttpServlet {
@@ -57,6 +63,8 @@ public class PublishServlet extends HttpServlet {
 			session.setAttribute("title", title);
 			response.sendRedirect(failPage);
 		} else {
+			User user = (User) session.getAttribute("user");
+			storePostInfo(title, plate, content, user.getUsrname());
 			System.out.println("**************title**************\n" + title);
 			System.out.println("**************plate**************\n" + plate);
 			System.out.println("**************content**************\n" + content);
@@ -66,4 +74,36 @@ public class PublishServlet extends HttpServlet {
 		}
 	}
 
+	public void storePostInfo(String title, String plate, String content, String username) {
+		String driverClass = "com.mysql.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/?user=root";
+		String DBUSER = "root";
+		String PASSWORD = "menhui2012";
+		try {
+			Class.forName(driverClass);
+			java.sql.Connection cn = DriverManager.getConnection(url, DBUSER, PASSWORD);
+			Statement stmt = cn.createStatement();
+			ResultSet resultSet = stmt.executeQuery("SELECT count(post_id) FROM web_routine.post_info;");
+			resultSet.next();
+			int postID = Integer.parseInt(resultSet.getString(1));
+
+			resultSet = stmt.executeQuery("SELECT plate_id FROM web_routine.plate_info WHERE name=\'" + plate + "\';");
+			resultSet.next();
+			String plateID = resultSet.getString(1);
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+			String sql = String.format(
+					"INSERT INTO web_routine.post_info "
+							+ "(`post_id`,`title`, `content`,`auther`,`plate_id`,`publish_time`)"
+							+ " values (\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\')",
+					String.format("%1$,010d", postID), title, content, username, plateID,
+					simpleDateFormat.format(new java.util.Date()));
+
+			stmt.execute(sql);
+			cn.close();
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+			ex.printStackTrace();
+		}
+	}
 }

@@ -7,13 +7,17 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<%@ page import="com.postBean.*"%>
+	<%@ page import="com.usrBean.*"%>
+	<%@ page import="java.util.ArrayList"%>
 	<%
-		String username = (String) session.getAttribute("user");
-		if (username == null || username.equals("")) {
+		ArrayList<Post> posts = (ArrayList<Post>) session.getAttribute("posts");
+		String username = (String) session.getAttribute("username");
+		User user = (User) session.getAttribute("user");
+		System.out.println(posts);
+		if (username == null || username.equals("") || user == null || posts == null) {
 			response.sendRedirect("login.jsp");
 		}
-
-		//session.setAttribute("is_admin", false);
 	%>
 	<!-- Navigation -->
 	<nav class="navbar fixed-top navbar-toggleable-md navbar-light"
@@ -36,10 +40,10 @@
 					href="information.jsp">我的信息</a></li>
 
 				<li class="nav-item"
-					style="display: <%/*if ((boolean) session.getAttribute("is_admin"))
-				out.print("block");
-			else//如果把is_admin设为true，就会显示信息查询这一栏
-				out.print("none");*/%>"><a
+					style="display: <%if (user == null || !user.isAdmin())
+				out.print("none");
+			else
+				out.print("block");%>"><a
 					class="nav-link page-scroll" href="search.jsp">信息查询</a></li>
 
 				<li class="nav-item"><a class="nav-link page-scroll"

@@ -1,0 +1,70 @@
+package com.postBean;
+
+import java.sql.Date;
+import java.util.ArrayList;
+
+public class Post {
+	private String postID;
+	private Date publishTime;
+	private String contents;
+	private String auther;
+	private String title;
+
+	private ArrayList<Post> comments;
+
+	public Post(String postID, String title, Date publishTime, String auther, String contents) {
+		this.postID = postID;
+		this.contents = contents;
+		this.publishTime = publishTime;
+		this.auther = auther;
+		this.title = title;
+	}
+
+	public ArrayList<Post> getComments() {
+		return comments;
+	}
+
+	public void setComments(ArrayList<Post> comments) {
+		this.comments = comments;
+	}
+
+	public String getPostID() {
+		return postID;
+	}
+
+	public void setPostID(String postID) {
+		this.postID = postID;
+	}
+
+	public Date getPublishTime() {
+		return publishTime;
+	}
+
+	public void setPublishTime(Date publishTime) {
+		this.publishTime = publishTime;
+	}
+
+	public String getContent() {
+		return contents;
+	}
+
+	public void setContent(String contents) {
+		this.contents = contents;
+	}
+
+	public String getAuther() {
+		return auther;
+	}
+
+	public void setAuther(String auther) {
+		this.auther = auther;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+}
