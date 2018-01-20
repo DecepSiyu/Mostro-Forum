@@ -4,6 +4,14 @@ public class Plate {
 	private String plateID;
 	private String name;
 
+	public Plate() {
+	}
+
+	public Plate(String plateID, String name) {
+		this.plateID = plateID;
+		this.name = name;
+	}
+
 	public String getName() {
 		return name;
 	}

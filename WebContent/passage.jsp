@@ -44,6 +44,10 @@
 
 	<!-- Navigation -->
 	<%@ include file="navigation.jsp"%>
+	<%
+		Post post = (Post) session.getAttribute("post");
+		if (post != null) {
+	%>
 
 	<!-- Page Header -->
 	<header class="intro-header"
@@ -52,9 +56,9 @@
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
 				<div class="post-heading">
-					<h1>${title}</h1>
-					<h2 class="subheading">${subtitle}</h2>
-					<span class="meta">作者： <a href="#">Mostro</a>${date}</span>
+					<h1><%=post.getTitle()%></h1>
+					<h2 class="subheading"><%="发布时间："+post.getPublishTime() %></h2>
+					<span class="meta">作者： <a href="#"><%=post.getAuther()%></a>${date}</span>
 				</div>
 			</div>
 		</div>
@@ -66,8 +70,10 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
-				<p>${part_1}</p>
 
+				<p><%=post.getContent()%></p>
+				
+				<!-- 
 				<p>${part_2}</p>
 
 				<p>${part_3}</p>
@@ -86,8 +92,8 @@
 					src="img/post-sample-image.jpg" alt="">
 				</a> <span class="caption text-muted">To go places and do things
 					that have never been done before – that’s what living is all about.</span>
-
-				<p>Space, the final frontier. These are the voyages of the
+			
+					<p>Space, the final frontier. These are the voyages of the
 					Starship Enterprise. Its five-year mission: to explore strange new
 					worlds, to seek out new life and new civilizations, to boldly go
 					where no man has gone before.</p>
@@ -95,18 +101,20 @@
 				<p>As I stand out here in the wonders of the unknown at Hadley,
 					I sort of realize there’s a fundamental truth to our nature, Man
 					must explore, and this is exploration at its greatest.</p>
-
 				<p>
 					Placeholder text by <a href="http://spaceipsum.com/">Space
 						Ipsum</a>. Photographs by <a
 						href="https://www.flickr.com/photos/nasacommons/">NASA on The
 						Commons</a>.
 				</p>
+				-->
 			</div>
 		</div>
 	</div>
 	</article>
-
+	<%
+		}
+	%>
 	<hr>
 
 	<!-- jQuery Version 3.1.1 -->

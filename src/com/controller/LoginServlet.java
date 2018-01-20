@@ -1,6 +1,7 @@
 package com.controller;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.postBean.Plate;
 import com.postBean.Post;
 
 /**
@@ -60,7 +62,7 @@ public class LoginServlet extends HttpServlet {
 
 	}
 
-	private static ArrayList<Post> loadPosts(Statement statement, int count) throws SQLException {
+	public static ArrayList<Post> loadPosts(Connection connection, Statement statement, int count) throws SQLException {
 		statement.executeQuery(
 				String.format("SELECT * FROM web_routine.post_info ORDER BY publish_time DESC LIMIT 0,%d ;", count));
 		ResultSet resultSet = statement.getResultSet();
@@ -72,7 +74,18 @@ public class LoginServlet extends HttpServlet {
 			String content = resultSet.getString("content");
 			String auther = resultSet.getString("auther");
 			String title = resultSet.getString("title");
-			posts.add(new Post(postID, title, date, auther, content));
+
+			Statement plateStatement = connection.createStatement();
+			plateStatement.executeQuery(String.format("SELECT name FROM web_routine.plate_info WHERE plate_id=\'%s\';",
+					resultSet.getString("plate_id")));
+			ResultSet plateResult = plateStatement.getResultSet();
+			plateResult.next();
+
+			Plate plate = new Plate(resultSet.getString("plate_id"), plateResult.getString("name"));
+
+			Post post = new Post(postID, title, date, auther, content);
+			post.setPlate(plate);
+			posts.add(post);
 		}
 		return posts;
 	}
@@ -99,7 +112,7 @@ public class LoginServlet extends HttpServlet {
 				user.setUsrname(resultSet.getString("usrname").trim());
 				user.setAdmin(resultSet.getBoolean("is_admin"));
 				if (usrname.equals(user.getUsrname()) && password.equals(user.getPassword())) {
-					session.setAttribute("posts", loadPosts(statement, 200)); // 载入帖子列表
+					session.setAttribute("posts", loadPosts(cn, statement, 200)); // 载入帖子列表
 					return user;
 				}
 			}

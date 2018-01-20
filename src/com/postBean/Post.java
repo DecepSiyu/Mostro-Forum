@@ -9,6 +9,7 @@ public class Post {
 	private String contents;
 	private String auther;
 	private String title;
+	private Plate plate;
 
 	private ArrayList<Post> comments;
 
@@ -66,5 +67,13 @@ public class Post {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public Plate getPlate() {
+		return plate;
+	}
+
+	public void setPlate(Plate plate) {
+		this.plate = plate;
 	}
 }

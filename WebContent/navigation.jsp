@@ -14,7 +14,6 @@
 		ArrayList<Post> posts = (ArrayList<Post>) session.getAttribute("posts");
 		String username = (String) session.getAttribute("username");
 		User user = (User) session.getAttribute("user");
-		System.out.println(posts);
 		if (username == null || username.equals("") || user == null || posts == null) {
 			response.sendRedirect("login.jsp");
 		}

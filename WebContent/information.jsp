@@ -1,3 +1,4 @@
+<%@page import="com.usrServlet.UsrUpdateServlet"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -104,6 +105,21 @@
 					</div>
 				</form>
 
+				<%
+					String driverClass = "com.mysql.jdbc.Driver";
+					String url = "jdbc:mysql://localhost:3306/?user=root";
+					String DBUSER = "root";
+					String PASSWORD = "menhui2012";
+					try {
+						Class.forName(driverClass);
+						java.sql.Connection cn = DriverManager.getConnection(url, DBUSER, PASSWORD);
+						UsrUpdateServlet.loadUsrMsg(cn, user.getUsrname());
+					} catch (Exception ex) {
+						System.out.println(ex.getMessage());
+						ex.printStackTrace();
+					}
+					if (user != null) {
+				%>
 				<form id="normal-infochange" method="post" action="UsrUpdateServlet">
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
@@ -116,21 +132,22 @@
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
 							<label>邮箱</label> <input type="text" class="form-control"
-								placeholder="邮箱：${user_email}" name="email">
+								placeholder="邮箱：<%=user.getEmail()%>" name="email">
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
 							<label>性别</label> <input type="text" class="form-control"
-								placeholder="性别：${user_sex}" name="sex">
+								placeholder="性别：<%=user.getSex()%>" name="sex">
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
 							<label>生日</label> <input type="text" class="form-control"
-								placeholder="生日：${user_birthday}" name="birthday">
+								placeholder="生日：<%=user.getBirthday().toString()%>"
+								name="birthday">
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
@@ -141,6 +158,10 @@
 						<button type="submit" name="submit" class="btn btn-secondary">修改</button>
 					</div>
 				</form>
+				<%
+					}
+				%>
+				
 			</div>
 		</div>
 	</div>

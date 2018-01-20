@@ -67,19 +67,37 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+				<%@ page import="com.controller.*"%>
+				<%@ page import="java.sql.*"%>
 				<%
+					String driverClass = "com.mysql.jdbc.Driver";
+					String url = "jdbc:mysql://localhost:3306/?user=root";
+					String DBUSER = "root";
+					String PASSWORD = "menhui2012";
+					Class.forName(driverClass);
+					java.sql.Connection cn = DriverManager.getConnection(url, DBUSER, PASSWORD);
+
+					posts = LoginServlet.loadPosts(cn, cn.createStatement(), 200);
+					session.setAttribute("posts", posts);
 					if (posts != null) {
 						for (int i = 0; i < posts.size(); i++) {
 				%>
-				<div class="post-preview">
-					<a href="passage.jsp">
-						<h2 class="post-title"><%=posts.get(i).getTitle()%></h2>
-						<h3 class="post-subtitle"><%=posts.get(i).getContent()%></h3>
-					</a>
-					<p class="post-meta">
-						梗概 <a href="#">作者 </a>日期
-					</p>
-				</div>
+				<form id=<%=String.format("\"%s\"", posts.get(i).getPostID())%>
+					action="ViewPostServlet" method="get">
+					<div class="post-preview">
+						<a href="passage.jsp" type="submit"
+							onclick="document.getElementById(<%=String.format("\'%s\'", posts.get(i).getPostID())%>).submit();">
+							<h2 class="post-title"><%=posts.get(i).getTitle()%></h2>
+							<h3 class="post-subtitle"><%=posts.get(i).getContent()%></h3> <input
+							id="post_id_input" name="post_id" style="display: none"
+							value=<%=String.format("\"%s\"", posts.get(i).getPostID())%>>
+						</a>
+						<p class="post-meta">
+							<%="板块名称：" + posts.get(i).getPlate().getName()%>
+							<a href="#"><%="作者：" + posts.get(i).getAuther()%> </a><%="创作时间：" + posts.get(i).getPublishTime()%>
+						</p>
+					</div>
+				</form>
 				<%
 					}
 					}

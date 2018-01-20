@@ -1,9 +1,11 @@
 package com.usrServlet;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.servlet.ServletException;
@@ -12,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.usrBean.User;
 
 /**
  * Servlet implementation class LoginServlet
@@ -61,6 +65,33 @@ public class UsrUpdateServlet extends HttpServlet {
 		response.sendRedirect(successPage);
 	}
 
+	public static User loadUsrMsg(Connection connection, String username) throws SQLException {
+		Statement statement = connection.createStatement();
+		ResultSet resultSet = statement
+				.executeQuery(String.format("SELECT * from web_routine.usr_info where usrname=\'%s\'", username));
+		resultSet.next();
+		User user = new User();
+		user.setBirthday(resultSet.getDate("birthday"));
+		user.setAdmin(resultSet.getBoolean("is_admin"));
+		user.setEmail(resultSet.getString("email").trim());
+		user.setPassword(resultSet.getString("passwd").trim());
+		user.setSex(resultSet.getString("sex").trim());
+		user.setUsrname(username);
+		return user;
+	}
+
+	public static void updateUsrMsg(Connection connection, User user) throws SQLException {
+		Statement statement = connection.createStatement();
+
+		statement.execute(String.format(
+				"UPDATE web_routine.usr_info SET email=\'%s\',sex=\'%s\',birthday=\'%s\' WHERE usrname=\'%s\';",
+				user.getEmail(), user.getSex(), user.getBirthday(), user.getUsrname()));
+
+		System.out.println(
+				user.getUsrname() + " info :" + user.getBirthday() + " " + user.getBirthday() + " " + user.getSex());
+
+	}
+
 	public void update(HttpSession session, String usrname, String textOfBirthday, String sex, String email) {
 		String driverClass = "com.mysql.jdbc.Driver";
 		String url = "jdbc:mysql://localhost:3306/?user=root";
@@ -69,32 +100,26 @@ public class UsrUpdateServlet extends HttpServlet {
 		try {
 			Class.forName(driverClass);
 			java.sql.Connection cn = DriverManager.getConnection(url, DBUSER, PASSWORD);
-			Statement stmt = cn.createStatement();
 
-			ResultSet rs = stmt.executeQuery("SELECT * from web_routine.usr_info where usrname=\'" + usrname + "\'");
-			rs.next();
-			String baseEmail = rs.getString("email");
-			if (email.isEmpty() && baseEmail != null) {
-				email = baseEmail.trim();
+			User user = loadUsrMsg(cn, usrname);
+			if (email.isEmpty() && user.getEmail() != null) {
+				email = user.getEmail();
 			}
-			String baseSex = rs.getString("sex");
-			if (sex.isEmpty() && baseSex != null) {
-				sex = baseSex.trim();
+			if (sex.isEmpty() && user.getSex() != null) {
+				sex = user.getSex();
 			}
-			Date baseBirthday = rs.getDate("birthday");
-			if (textOfBirthday.isEmpty() && baseBirthday != null) {
-				textOfBirthday = baseBirthday.toString();
+			if (textOfBirthday.isEmpty() && user.getBirthday() != null) {
+				textOfBirthday = user.getBirthday().toString();
 			}
 
-			stmt.execute("UPDATE web_routine.usr_info SET email=\'" + email + "\',sex=\'" + sex + "\' , birthday=\'"
-					+ textOfBirthday + "\' WHERE usrname=\'" + usrname + "\';");
-			System.out.println(usrname + " info :" + textOfBirthday + " " + email + " " + sex);
+			user.setBirthday(Date.valueOf(textOfBirthday));
+			user.setEmail(email);
+			user.setSex(sex);
 
+			updateUsrMsg(cn, user);
 			cn.close();
-			session.setAttribute("user_sex", sex);
-			session.setAttribute("user_birthday", textOfBirthday);
-			session.setAttribute("user_email", email);
 
+			session.setAttribute("user", user);
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 			ex.printStackTrace();
