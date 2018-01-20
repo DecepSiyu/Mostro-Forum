@@ -83,11 +83,9 @@ public class PublishServlet extends HttpServlet {
 			Class.forName(driverClass);
 			java.sql.Connection cn = DriverManager.getConnection(url, DBUSER, PASSWORD);
 			Statement stmt = cn.createStatement();
-			ResultSet resultSet = stmt.executeQuery("SELECT count(post_id) FROM web_routine.post_info;");
-			resultSet.next();
-			int postID = Integer.parseInt(resultSet.getString(1));
 
-			resultSet = stmt.executeQuery("SELECT plate_id FROM web_routine.plate_info WHERE name=\'" + plate + "\';");
+			ResultSet resultSet = stmt
+					.executeQuery("SELECT plate_id FROM web_routine.plate_info WHERE name=\'" + plate + "\';");
 			resultSet.next();
 			String plateID = resultSet.getString(1);
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -95,9 +93,8 @@ public class PublishServlet extends HttpServlet {
 			String sql = String.format(
 					"INSERT INTO web_routine.post_info "
 							+ "(`post_id`,`title`, `content`,`auther`,`plate_id`,`publish_time`)"
-							+ " values (\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\')",
-					String.format("%1$,010d", postID), title, content, username, plateID,
-					simpleDateFormat.format(new java.util.Date()));
+							+ " values (LEFT(MD5(RAND()),10),\'%s\',\'%s\',\'%s\',\'%s\',\'%s\')",
+					title, content, username, plateID, simpleDateFormat.format(new java.util.Date()));
 
 			stmt.execute(sql);
 			cn.close();

@@ -70,14 +70,8 @@
 				<%@ page import="com.controller.*"%>
 				<%@ page import="java.sql.*"%>
 				<%
-					String driverClass = "com.mysql.jdbc.Driver";
-					String url = "jdbc:mysql://localhost:3306/?user=root";
-					String DBUSER = "root";
-					String PASSWORD = "menhui2012";
-					Class.forName(driverClass);
-					java.sql.Connection cn = DriverManager.getConnection(url, DBUSER, PASSWORD);
-
-					posts = LoginServlet.loadPosts(cn, cn.createStatement(), 200);
+					java.sql.Connection connection = LoginServlet.getDateBaseConn();
+					posts = LoginServlet.loadPosts(connection, connection.createStatement(), 200);
 					session.setAttribute("posts", posts);
 					if (posts != null) {
 						for (int i = 0; i < posts.size(); i++) {

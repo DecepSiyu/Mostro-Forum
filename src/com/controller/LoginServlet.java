@@ -90,14 +90,9 @@ public class LoginServlet extends HttpServlet {
 		return posts;
 	}
 
-	public static com.usrBean.User checkLogin(HttpSession session, String usrname, String password) {
-		String driverClass = "com.mysql.jdbc.Driver";
-		String url = "jdbc:mysql://localhost:3306/?user=root";
-		String DBUSER = "root";
-		String PASSWORD = "menhui2012";
+	private static com.usrBean.User checkLogin(HttpSession session, String usrname, String password) {
 		try {
-			Class.forName(driverClass);
-			java.sql.Connection cn = DriverManager.getConnection(url, DBUSER, PASSWORD);
+			java.sql.Connection cn = getDateBaseConn();
 			Statement statement = cn.createStatement();
 			String sql = "SELECT * from web_routine.usr_info where usrname=\'" + usrname + "\'";
 			ResultSet resultSet = statement.executeQuery(sql);
@@ -149,6 +144,15 @@ public class LoginServlet extends HttpServlet {
 			}
 			response.sendRedirect(failPage);
 		}
+	}
+
+	public static Connection getDateBaseConn() throws ClassNotFoundException, SQLException {
+		String driverClass = "com.mysql.jdbc.Driver";
+		String url = "jdbc:mysql://127.0.0.1:3306/?user=mostro";
+		String admin = "mostro";
+		String passwd = "mostro";
+		Class.forName(driverClass);
+		return DriverManager.getConnection(url, admin, passwd);
 	}
 
 }

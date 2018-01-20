@@ -88,7 +88,7 @@ public class UsrUpdateServlet extends HttpServlet {
 				user.getEmail(), user.getSex(), user.getBirthday(), user.getUsrname()));
 
 		System.out.println(
-				user.getUsrname() + " info :" + user.getBirthday() + " " + user.getBirthday() + " " + user.getSex());
+				user.getUsrname() + " info :" + user.getEmail() + " " + user.getBirthday() + " " + user.getSex());
 
 	}
 
