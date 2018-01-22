@@ -49,6 +49,10 @@ public class Post {
 		return contents;
 	}
 
+	public String getBriefContent() {
+		return contents.substring(0, 50) + "...";
+	}
+
 	public void setContent(String contents) {
 		this.contents = contents;
 	}

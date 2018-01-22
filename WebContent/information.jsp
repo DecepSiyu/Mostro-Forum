@@ -197,11 +197,6 @@
 <%@ page import="com.usrBean.*"%>
 
 <%
-	if (user != null) {
-		session.setAttribute("user_sex", user.getSex());
-		session.setAttribute("user_birthday", user.getBirthday());
-		session.setAttribute("user_email", user.getEmail());
-	}
 	session.setAttribute("error", "");
 	session.setAttribute("message", "");
 %>

@@ -1,7 +1,7 @@
 package com.controller;
 
 import java.io.IOException;
-import java.sql.DriverManager;
+import java.sql.Connection;
 import java.sql.Statement;
 
 import javax.servlet.ServletException;
@@ -75,18 +75,12 @@ public class RegistrateServlet extends HttpServlet {
 	}
 
 	public void storeRegInfo(String usrname, String password) {
-		String driverClass = "com.mysql.jdbc.Driver";
-		String url = "jdbc:mysql://localhost:3306/?user=root";
-		String DBUSER = "root";
-		String PASSWORD = "menhui2012";
 		try {
-			Class.forName(driverClass);
-			java.sql.Connection cn = DriverManager.getConnection(url, DBUSER, PASSWORD);
-			Statement stmt = cn.createStatement();
+			Connection connection = LoginServlet.connection;
+			Statement stmt = connection.createStatement();
 			String sql = "insert into web_routine.usr_info (`usrname`, `passwd`,`is_admin`) values (\'" + usrname
 					+ "\',\'" + password + "\',false)";
 			stmt.execute(sql);
-			cn.close();
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 			ex.printStackTrace();

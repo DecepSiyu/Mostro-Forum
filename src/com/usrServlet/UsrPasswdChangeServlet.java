@@ -1,7 +1,7 @@
 package com.usrServlet;
 
 import java.io.IOException;
-import java.sql.DriverManager;
+import java.sql.Connection;
 import java.sql.Statement;
 
 import javax.servlet.ServletException;
@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.controller.LoginServlet;
 import com.usrBean.User;
 
 @WebServlet("/UsrPasswdChangeServlet")
@@ -72,21 +73,14 @@ public class UsrPasswdChangeServlet extends HttpServlet {
 			session.setAttribute("error", "密码错误");
 			response.sendRedirect(failPage);
 		}
-
 	}
 
 	public void passwdChange(String usrname, String passwd) {
-		String driverClass = "com.mysql.jdbc.Driver";
-		String url = "jdbc:mysql://localhost:3306/?user=root";
-		String DBUSER = "root";
-		String PASSWORD = "menhui2012";
 		try {
-			Class.forName(driverClass);
-			java.sql.Connection cn = DriverManager.getConnection(url, DBUSER, PASSWORD);
-			Statement stmt = cn.createStatement();
+			Connection connection = LoginServlet.connection;
+			Statement stmt = connection.createStatement();
 			String sql = "UPDATE web_routine.usr_info SET passwd=\'" + passwd + "\' where usrname=\'" + usrname + "\'";
 			stmt.execute(sql);
-			cn.close();
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 			ex.printStackTrace();

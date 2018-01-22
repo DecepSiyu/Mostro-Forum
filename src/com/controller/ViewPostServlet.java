@@ -1,7 +1,7 @@
 package com.controller;
 
 import java.io.IOException;
-import java.sql.DriverManager;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -50,13 +50,8 @@ public class ViewPostServlet extends HttpServlet {
 	}
 
 	private Post findPost(String postID) {
-		String driverClass = "com.mysql.jdbc.Driver";
-		String url = "jdbc:mysql://localhost:3306/?user=root";
-		String DBUSER = "root";
-		String PASSWORD = "menhui2012";
 		try {
-			Class.forName(driverClass);
-			java.sql.Connection connection = DriverManager.getConnection(url, DBUSER, PASSWORD);
+			Connection connection = LoginServlet.connection;
 			Statement statement = connection.createStatement();
 			String sql = String.format("SELECT * from web_routine.post_info where post_id=\'%s\'", postID);
 			ResultSet resultSet = statement.executeQuery(sql);
@@ -66,7 +61,6 @@ public class ViewPostServlet extends HttpServlet {
 					resultSet.getDate("publish_time"), resultSet.getString("auther"), resultSet.getString("content"));
 
 			resultSet.close();
-			connection.close();
 			return post;
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());

@@ -56,9 +56,14 @@
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
 				<div class="post-heading">
-					<h1><%=post.getTitle()%></h1>
-					<h2 class="subheading"><%="发布时间："+post.getPublishTime() %></h2>
-					<span class="meta">作者： <a href="#"><%=post.getAuther()%></a>${date}</span>
+					<form id="delete_post" method="post" action="UsrDeletePostServlet">
+						<h1><%=post.getTitle()%></h1>
+						<h2 class="subheading"><%="发布时间：" + post.getPublishTime()%></h2>
+						<span class="meta">作者： <a href="#"><%=post.getAuther()%></a>
+						</span> <span class="meta" style="text-align: right;"> <a href="#"
+							onclick="document.getElementById('delete_post').submit();">删除帖子</a>
+						</span>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -70,9 +75,9 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
-
+				<span><font color="gray" size="2">${error}</font> </span>
 				<p><%=post.getContent()%></p>
-				
+
 				<!-- 
 				<p>${part_2}</p>
 
@@ -132,3 +137,7 @@
 </body>
 
 </html>
+<%
+	session.setAttribute("error", "");
+	session.setAttribute("message", "");
+%>

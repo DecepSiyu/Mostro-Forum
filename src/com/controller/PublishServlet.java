@@ -1,7 +1,7 @@
 package com.controller;
 
 import java.io.IOException;
-import java.sql.DriverManager;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
@@ -75,14 +75,9 @@ public class PublishServlet extends HttpServlet {
 	}
 
 	public void storePostInfo(String title, String plate, String content, String username) {
-		String driverClass = "com.mysql.jdbc.Driver";
-		String url = "jdbc:mysql://localhost:3306/?user=root";
-		String DBUSER = "root";
-		String PASSWORD = "menhui2012";
 		try {
-			Class.forName(driverClass);
-			java.sql.Connection cn = DriverManager.getConnection(url, DBUSER, PASSWORD);
-			Statement stmt = cn.createStatement();
+			Connection connection = LoginServlet.connection;
+			Statement stmt = connection.createStatement();
 
 			ResultSet resultSet = stmt
 					.executeQuery("SELECT plate_id FROM web_routine.plate_info WHERE name=\'" + plate + "\';");
@@ -97,7 +92,6 @@ public class PublishServlet extends HttpServlet {
 					title, content, username, plateID, simpleDateFormat.format(new java.util.Date()));
 
 			stmt.execute(sql);
-			cn.close();
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 			ex.printStackTrace();

@@ -124,3 +124,7 @@
 </body>
 
 </html>
+<%
+	session.setAttribute("error", "");
+	session.setAttribute("message", "");
+%>

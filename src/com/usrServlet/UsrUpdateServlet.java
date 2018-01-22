@@ -3,7 +3,6 @@ package com.usrServlet;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.controller.LoginServlet;
 import com.usrBean.User;
 
 /**
@@ -93,15 +93,10 @@ public class UsrUpdateServlet extends HttpServlet {
 	}
 
 	public void update(HttpSession session, String usrname, String textOfBirthday, String sex, String email) {
-		String driverClass = "com.mysql.jdbc.Driver";
-		String url = "jdbc:mysql://localhost:3306/?user=root";
-		String DBUSER = "root";
-		String PASSWORD = "menhui2012";
 		try {
-			Class.forName(driverClass);
-			java.sql.Connection cn = DriverManager.getConnection(url, DBUSER, PASSWORD);
+			Connection connection = LoginServlet.connection;
 
-			User user = loadUsrMsg(cn, usrname);
+			User user = loadUsrMsg(connection, usrname);
 			if (email.isEmpty() && user.getEmail() != null) {
 				email = user.getEmail();
 			}
@@ -116,8 +111,7 @@ public class UsrUpdateServlet extends HttpServlet {
 			user.setEmail(email);
 			user.setSex(sex);
 
-			updateUsrMsg(cn, user);
-			cn.close();
+			updateUsrMsg(connection, user);
 
 			session.setAttribute("user", user);
 		} catch (Exception ex) {

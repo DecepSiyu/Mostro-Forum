@@ -70,8 +70,7 @@
 				<%@ page import="com.controller.*"%>
 				<%@ page import="java.sql.*"%>
 				<%
-					java.sql.Connection connection = LoginServlet.getDateBaseConn();
-					posts = LoginServlet.loadPosts(connection, connection.createStatement(), 200);
+					posts = LoginServlet.loadPosts(LoginServlet.connection, 200);
 					session.setAttribute("posts", posts);
 					if (posts != null) {
 						for (int i = 0; i < posts.size(); i++) {
@@ -82,7 +81,7 @@
 						<a href="passage.jsp" type="submit"
 							onclick="document.getElementById(<%=String.format("\'%s\'", posts.get(i).getPostID())%>).submit();">
 							<h2 class="post-title"><%=posts.get(i).getTitle()%></h2>
-							<h3 class="post-subtitle"><%=posts.get(i).getContent()%></h3> <input
+							<h3 class="post-subtitle"><%=posts.get(i).getBriefContent()%></h3> <input
 							id="post_id_input" name="post_id" style="display: none"
 							value=<%=String.format("\"%s\"", posts.get(i).getPostID())%>>
 						</a>
