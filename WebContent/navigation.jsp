@@ -42,7 +42,7 @@
 				out.print("none");
 			else
 				out.print("block");%>"><a
-					class="nav-link page-scroll" href="search.jsp">信息查询</a></li>
+					class="nav-link page-scroll" href="search.jsp">板块管理</a></li>
 
 				<li class="nav-item"><a class="nav-link page-scroll"
 					href="login.jsp">退出</a></li>

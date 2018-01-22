@@ -1,4 +1,4 @@
-package adminManage.adminBean;
+package com.adminBean;
 
 import com.usrBean.User;
 

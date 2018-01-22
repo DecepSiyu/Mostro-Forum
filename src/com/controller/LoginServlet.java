@@ -85,16 +85,17 @@ public class LoginServlet extends HttpServlet {
 			String title = resultSet.getString("title");
 
 			Statement plateStatement = connection.createStatement();
-			plateStatement.executeQuery(String.format("SELECT name FROM web_routine.plate_info WHERE plate_id=\'%s\';",
-					resultSet.getString("plate_id")));
-			ResultSet plateResult = plateStatement.getResultSet();
-			plateResult.next();
+			ResultSet plateResult = plateStatement.executeQuery(String.format(
+					"SELECT name FROM web_routine.plate_info WHERE plate_id=\'%s\';", resultSet.getString("plate_id")));
 
-			Plate plate = new Plate(resultSet.getString("plate_id"), plateResult.getString("name"));
+			if (plateResult.next()) {
+				Plate plate = new Plate(resultSet.getString("plate_id"), plateResult.getString("name"));
 
-			Post post = new Post(postID, title, date, auther, content);
-			post.setPlate(plate);
-			posts.add(post);
+				Post post = new Post(postID, title, date, auther, content);
+				post.setPlate(plate);
+				posts.add(post);
+			}
+
 		}
 		return posts;
 	}

@@ -11,12 +11,12 @@ CREATE TABLE usr_info (
 
 CREATE TABLE plate_info (
     plate_id CHAR(10) PRIMARY KEY,
-    name CHAR(10) NOT NULL
+    name CHAR(50) NOT NULL
 );
 
 CREATE TABLE post_info (
     post_id CHAR(10) PRIMARY KEY,
-    title CHAR(50) NOT NULL,
+    title CHAR(50) NOT NULL UNIQUE,
     content TEXT NOT NULL,
     auther CHAR(20) REFERENCES usr_info.usrname,
     plate_id CHAR(10) REFERENCES plate_info.plate_id,

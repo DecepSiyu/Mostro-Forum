@@ -50,7 +50,11 @@ public class Post {
 	}
 
 	public String getBriefContent() {
-		return contents.substring(0, 50) + "...";
+		if (contents.length() > 100) {
+			return contents.substring(0, 100) + "...";
+		} else {
+			return contents;
+		}
 	}
 
 	public void setContent(String contents) {

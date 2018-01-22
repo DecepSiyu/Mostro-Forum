@@ -23,6 +23,8 @@ public class PublishServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String successPage = "post.jsp";
 	private static final String failPage = "post.jsp";
+	private HttpSession session;
+	private HttpServletResponse response;
 
 	public PublishServlet() {
 		super();
@@ -51,7 +53,7 @@ public class PublishServlet extends HttpServlet {
 		String title = request.getParameter("title");
 		String plate = request.getParameter("plate");
 		String content = request.getParameter("content");
-		HttpSession session = request.getSession();
+		session = request.getSession();
 		session.setAttribute("error", "");
 		session.setAttribute("message", "");
 		if (title.equals("")) {
@@ -74,24 +76,51 @@ public class PublishServlet extends HttpServlet {
 		}
 	}
 
-	public void storePostInfo(String title, String plate, String content, String username) {
+	public void storePostInfo(String title, String platename, String content, String username) throws IOException {
+		if (platename.length() > 50) {
+			session.setAttribute("error", "板块名过长");
+			response.sendRedirect(failPage);
+		}
+
 		try {
 			Connection connection = LoginServlet.connection;
-			Statement stmt = connection.createStatement();
+			Statement statement = connection.createStatement();
 
-			ResultSet resultSet = stmt
-					.executeQuery("SELECT plate_id FROM web_routine.plate_info WHERE name=\'" + plate + "\';");
-			resultSet.next();
-			String plateID = resultSet.getString(1);
+			ResultSet resultSet = statement
+					.executeQuery("SELECT plate_id FROM web_routine.plate_info WHERE name=\'" + platename + "\';");
+
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-			String sql = String.format(
-					"INSERT INTO web_routine.post_info "
-							+ "(`post_id`,`title`, `content`,`auther`,`plate_id`,`publish_time`)"
-							+ " values (LEFT(MD5(RAND()),10),\'%s\',\'%s\',\'%s\',\'%s\',\'%s\')",
-					title, content, username, plateID, simpleDateFormat.format(new java.util.Date()));
+			if (!resultSet.next()) {
+				String sql = String.format(
+						"INSERT INTO `web_routine`.`post_info` "
+								+ "(`post_id`,`title`, `content`,`auther`,`plate_id`,`publish_time`)"
+								+ " values (LEFT(MD5(RAND()),10),\'%s\',\'%s\',\'%s\',LEFT(MD5(RAND()),10),\'%s\')",
+						title, content, username, simpleDateFormat.format(new java.util.Date()));
+				statement.execute(sql);// 随机生成帖子ID和板块ID
 
-			stmt.execute(sql);
+				sql = String.format("SELECT plate_id from `web_routine`.`post_info` WHERE title=\'%s\';", title);
+				statement = connection.createStatement();
+				resultSet = statement.executeQuery(sql);// 找到刚刚生成的板块ID
+				resultSet.next();
+				String plateID = resultSet.getString(1);
+
+				sql = String.format("INSERT INTO `web_routine`.`plate_info` (`plate_id`,`name`) VALUES(\'%s\',\'%s\');",
+						plateID, platename);
+				statement.execute(sql);// 生成板块
+				statement.close();
+			} else {
+				String plateID = resultSet.getString(1);
+
+				String sql = String.format(
+						"INSERT INTO web_routine.post_info "
+								+ "(`post_id`,`title`, `content`,`auther`,`plate_id`,`publish_time`)"
+								+ " values (LEFT(MD5(RAND()),10),\'%s\',\'%s\',\'%s\',\'%s\',\'%s\')",
+						title, content, username, plateID, simpleDateFormat.format(new java.util.Date()));
+
+				statement.execute(sql);
+				statement.close();
+			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 			ex.printStackTrace();

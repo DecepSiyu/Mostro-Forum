@@ -1,3 +1,4 @@
+<%@page import="com.adminServlet.AdminPlateServlet"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -10,7 +11,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>信息查询</title>
+<title>板块管理</title>
 
 <!-- Bootstrap Core CSS -->
 <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -53,9 +54,9 @@
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
 				<div class="page-heading">
-					<h1>信息查询</h1>
+					<h1>板块管理</h1>
 					<hr class="small">
-					<span class="subheading">查找，修改他人信息</span>
+					<span class="subheading">查找，修改所有板块</span>
 				</div>
 			</div>
 		</div>
@@ -66,58 +67,54 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
-				<form id="search-form" method="post" action="#"
-					style="display: block">
-					<div class="control-group">
-						<div class="form-group floating-label-form-group controls">
-							<label>用户名</label> <input type="text" class="form-control"
-								placeholder="用户名" name="search-username">
-							<p class="help-block text-danger"></p>
-						</div>
-					</div>
-					<br>
-					<div id="success"></div>
-					<div class="form-group">
-						<button type="submit" name="submit" value="publish"
-							onclick="diag()" class="btn btn-secondary">查找</button>
-					</div>
-				</form>
-				<form id="result-form" method="post" action="#"
-					style="display: none">
-					<div class="control-group">
-						<div class="form-group floating-label-form-group controls">
-							<label>用户名</label> <input type="text" class="form-control"
-								placeholder="用户名" name="username">
-							<p class="help-block text-danger"></p>
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="form-group floating-label-form-group controls">
-							<label>性别</label> <input type="text" class="form-control"
-								placeholder="性别" name="sex">
-							<p class="help-block text-danger"></p>
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="form-group floating-label-form-group controls">
-							<label>Email</label> <input type="text" class="form-control"
-								placeholder="Email" name="Email">
-							<p class="help-block text-danger"></p>
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="form-group floating-label-form-group controls">
-							<label>生日</label> <input type="text" class="form-control"
-								placeholder="生日" name="birthday">
-							<p class="help-block text-danger"></p>
-						</div>
+				<%@ page import="com.adminServlet.*"%>
+				<%@ page import="com.controller.*"%>
+				<%@ page import="java.sql.*"%>
+				<%
+					posts = LoginServlet.loadPosts(LoginServlet.connection, 200);
+					ArrayList<Plate> plates = AdminPlateServlet.loadPlates(LoginServlet.connection);
+					session.setAttribute("plates", plates);
+					if (plates != null) {
+						for (int i = 0; i < plates.size(); i++) {
+				%>
+				<form id=<%=String.format("\"%s\"", posts.get(i).getPostID())%>
+					action="ViewPostServlet" method="get">
+					<div class="post-preview">
+						<a type="submit"				>
+							<h2 class="post-title"><%=plates.get(i).getName()%></h2>
+							<h3 class="post-subtitle"></h3> <input id="post_id_input"
+							name="post_id" style="display: none"
+							value=<%=String.format("\"%s\"", plates.get(i).getPlateID())%>>
+						</a>
+						<p class="post-meta" >
+							<a href="#" onclick="document.getElementById(<%=String.format("\'%s\'", plates.get(i).getPlateID())%>).submit();">删除</a>					</p>
 					</div>
 				</form>
+				<%
+					}
+					}
+				%>
+				<hr>
+				<!-- Pager -->
+				<div class="clearfix">
+
+					<a class="btn btn-secondary float-right" href="#">下一页 &rarr;</a> <a
+						class="btn btn-secondary float-right" href="#">&larr;上一页</a>
+				</div>
 			</div>
 		</div>
 	</div>
 
 	<hr>
+
+	<!-- Footer -->
+	<footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1"></div>
+		</div>
+	</div>
+	</footer>
 
 	<!-- jQuery Version 3.1.1 -->
 	<script src="lib/jquery/jquery.js"></script>
@@ -128,19 +125,9 @@
 	<!-- Bootstrap Core JavaScript -->
 	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
 
-	<!-- Contact Form JavaScript -->
-	<script src="js/jqBootstrapValidation.js"></script>
-	<script src="js/contact_me.js"></script>
-
 	<!-- Theme JavaScript -->
 	<script src="js/clean-blog.min.js"></script>
 
-	<script type="text/javascript">
-		function diag() {
-			document.getElementById("result-form").style.display = "block";
-			document.getElementById("search-form").style.display = "none";
-		}
-	</script>
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-package adminManage.adminServlet;
+package com.adminServlet;
 
 import java.io.IOException;
 import java.sql.DriverManager;
@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet("/AdminPasswdChangeServlet")
-public class AdminPasswdChangeServlet extends HttpServlet{
+@WebServlet("/AdminDeletePostServlet")
+public class AdminDeletePostServlet extends HttpServlet{
 
-	public AdminPasswdChangeServlet() {
+	public AdminDeletePostServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -37,15 +37,12 @@ public class AdminPasswdChangeServlet extends HttpServlet{
 			throws ServletException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		String user = request.getParameter("usrname");
-		String passwd = request.getParameter("passwd");
-
-		//»¹²îÒ³Ãæ´úÂë£º
-		//Ôö¼Ó°å¿éÊý¾Ý¿â´úÂë£º
+		//ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ë£º
+		//É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ë£º
 	}
 	
-	//²ÎÊý´ý¶¨£¬½öÊµÏÖÁËÊý¾Ý¿âÁ´½Ó¹¦ÄÜ
-		public void passwdChange(String usrname, String passwd)
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½Ó¹ï¿½ï¿½ï¿½
+		public void deletePost()
 		{
 			String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";  
 			String url = "jdbc:sqlserver://localhost:1433; DatabaseName = BBSM";  
@@ -55,14 +52,15 @@ public class AdminPasswdChangeServlet extends HttpServlet{
 				Class.forName(driverClass);
 			    java.sql.Connection cn=DriverManager.getConnection(url,DBUSER,PASSWORD);
 				Statement stmt=cn.createStatement();
-			    String sql="update user_info set password=\'"+passwd+"\'"+
-				"where usrname=\'"+usrname+"\'";
-			   stmt.execute(sql);
-			   cn.close();
+			  //  String sql="SELECT usrname, password from usr_info where usrname=\'"+usrname+"\'";
+				//ResultSet rs=stmt.executeQuery(sql);
+				System.out.println("ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½Ó³É¹ï¿½");
+			    
+			    cn.close();//ï¿½Ø±Õ²ï¿½ï¿½ï¿½
 			}
 			catch(Exception ex){
 			System.out.println(ex.getMessage());
-			System.out.println("Á¬½ÓÒì³£");
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ì³£");
 			ex.printStackTrace();
 			}
 		}
