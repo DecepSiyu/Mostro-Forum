@@ -11,7 +11,7 @@ public class Post {
 	private String title;
 	private Plate plate;
 
-	private ArrayList<Post> comments;
+	private ArrayList<Comment> comments;
 
 	public Post(String postID, String title, Date publishTime, String auther, String contents) {
 		this.postID = postID;
@@ -21,11 +21,11 @@ public class Post {
 		this.title = title;
 	}
 
-	public ArrayList<Post> getComments() {
+	public ArrayList<Comment> getComments() {
 		return comments;
 	}
 
-	public void setComments(ArrayList<Post> comments) {
+	public void setComments(ArrayList<Comment> comments) {
 		this.comments = comments;
 	}
 

@@ -81,6 +81,7 @@
 					<div class="post-preview">
 						<a type="submit"				>
 							<h2 class="post-title"><%=plates.get(i).getName()%></h2>
+							<p class="post-meta">板块所有文章数目：  <%= AdminPlateServlet.getPostNum(LoginServlet.connection, plates.get(i).getPlateID())%></p>
 							<h3 class="post-subtitle"></h3> <input 
 							name="plate_id" style="display: none"
 							value=<%=String.format("\"%s\"", plates.get(i).getPlateID())%>>

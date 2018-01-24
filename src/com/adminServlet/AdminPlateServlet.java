@@ -78,4 +78,18 @@ public class AdminPlateServlet extends HttpServlet {
 		rs.close();
 		return arraylist;
 	}
+	
+	public static int getPostNum(Connection connection, String plate_id) throws SQLException
+	{
+		connection=LoginServlet.connection;
+		Statement stmt = connection.createStatement();
+		 String sql="SELECT count(*) from post_info where plate_id=\'"+plate_id+"\'";
+		 ResultSet rs=stmt.executeQuery(sql);
+		 rs.next();
+		int sum=rs.getInt(1);
+		rs.close();
+		return sum;
+	
+	}
+	
 }

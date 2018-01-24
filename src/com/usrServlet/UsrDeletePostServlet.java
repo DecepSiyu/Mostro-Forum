@@ -66,7 +66,7 @@ public class UsrDeletePostServlet extends HttpServlet {
 		try {
 			Connection connection = LoginServlet.connection;
 
-			if (user.isAdmin() || user.getUsrname().equals(post.getAuther())) {
+			if (user.isAdmin() || user.getUsrname().equals(post.getAuther().trim())) {
 				Statement statement = connection.createStatement();
 				String sql = String.format("DELETE FROM post_info WHERE post_id=\'%s\';",
 						post.getPostID());

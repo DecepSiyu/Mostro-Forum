@@ -2,8 +2,11 @@ package com.controller;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,8 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.postBean.Post;
-
+import com.postBean.*;
 @WebServlet("/ViewPostServlet")
 public class ViewPostServlet extends HttpServlet {
 
@@ -68,4 +70,26 @@ public class ViewPostServlet extends HttpServlet {
 			return null;
 		}
 	}
+	
+	public static ArrayList<Comment> loadComment(Connection connection, int count, String post_id) throws SQLException {
+		if (connection == null) {
+			return null;
+		}
+		Statement statement = connection.createStatement();
+		statement.executeQuery(
+				String.format("SELECT  top (%d) * FROM comment_info where post_id=\'%s\' ORDER BY publish_time DESC  ;", count, post_id));
+		ResultSet resultSet = statement.getResultSet();
+		ArrayList<Comment> comments = new ArrayList<Comment>(count);
+		while (resultSet.next()) {
+			String postID = resultSet.getString("post_id");
+			Date date = resultSet.getDate("publish_time");
+			String content = resultSet.getString("content");
+			String auther = resultSet.getString("auther");
+			String commentID = resultSet.getString("comment_id");
+		Comment comment= new Comment(commentID,  postID,  date,  content, auther);
+		comments.add(comment);
+		}
+		return comments;
+	}
+
 }

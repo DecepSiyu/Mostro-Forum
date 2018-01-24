@@ -118,8 +118,8 @@ public class PublishServlet extends HttpServlet {
 				String sql = String.format(
 						"INSERT INTO post_info "
 								+ "(post_id,title, content,auther,plate_id,publish_time)"
-								+ " values (LEFT(MD5(RAND()),10),\'%s\',\'%s\',\'%s\',\'%s\',\'%s\')",
-						title, content, username, plateID, simpleDateFormat.format(new java.util.Date()));
+								+ "\'%s\' ,\'%s\',\'%s\',\'%s\',\'%s\',\'%s\')",
+						post_id,title, content, username, plateID, simpleDateFormat.format(new java.util.Date()));
 
 				statement.execute(sql);
 				statement.close();
