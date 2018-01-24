@@ -78,7 +78,7 @@ public class RegistrateServlet extends HttpServlet {
 		try {
 			Connection connection = LoginServlet.connection;
 			Statement stmt = connection.createStatement();
-			String sql = "insert into web_routine.usr_info (`usrname`, `passwd`,`is_admin`) values (\'" + usrname
+			String sql = "insert into usr_info (usrname, passwd,is_admin) values (\'" + usrname
 					+ "\',\'" + password + "\',false)";
 			stmt.execute(sql);
 		} catch (Exception ex) {

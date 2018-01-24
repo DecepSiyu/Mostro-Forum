@@ -74,7 +74,7 @@ public class LoginServlet extends HttpServlet {
 		}
 		Statement statement = connection.createStatement();
 		statement.executeQuery(
-				String.format("SELECT * FROM web_routine.post_info ORDER BY publish_time DESC LIMIT 0,%d ;", count));
+				String.format("SELECT  top (%d) * FROM post_info ORDER BY publish_time DESC ;", count));
 		ResultSet resultSet = statement.getResultSet();
 		ArrayList<Post> posts = new ArrayList<Post>(count);
 		while (resultSet.next()) {
@@ -85,17 +85,16 @@ public class LoginServlet extends HttpServlet {
 			String title = resultSet.getString("title");
 
 			Statement plateStatement = connection.createStatement();
-			ResultSet plateResult = plateStatement.executeQuery(String.format(
-					"SELECT name FROM web_routine.plate_info WHERE plate_id=\'%s\';", resultSet.getString("plate_id")));
+			plateStatement.executeQuery(String.format("SELECT name FROM plate_info WHERE plate_id=\'%s\';",
+					resultSet.getString("plate_id")));
+			ResultSet plateResult = plateStatement.getResultSet();
+			plateResult.next();
 
-			if (plateResult.next()) {
-				Plate plate = new Plate(resultSet.getString("plate_id"), plateResult.getString("name"));
+			Plate plate = new Plate(resultSet.getString("plate_id"), plateResult.getString("name"));
 
-				Post post = new Post(postID, title, date, auther, content);
-				post.setPlate(plate);
-				posts.add(post);
-			}
-
+			Post post = new Post(postID, title, date, auther, content);
+			post.setPlate(plate);
+			posts.add(post);
 		}
 		return posts;
 	}
@@ -103,7 +102,7 @@ public class LoginServlet extends HttpServlet {
 	private static com.usrBean.User checkLogin(String usrname, String password) {
 		try {
 			Statement statement = connection.createStatement();
-			String sql = "SELECT * from web_routine.usr_info where usrname=\'" + usrname + "\'";
+			String sql = "SELECT * from usr_info where usrname=\'" + usrname + "\'";
 			ResultSet resultSet = statement.executeQuery(sql);
 			while (resultSet.next()) {
 				com.usrBean.User user = new com.usrBean.User();
@@ -154,12 +153,12 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	public static Connection getDateBaseConn() throws ClassNotFoundException, SQLException {
-		String driverClass = "com.mysql.jdbc.Driver";
-		String url = "jdbc:mysql://127.0.0.1:3306/?user=mostro";
-		String admin = "mostro";
-		String passwd = "mostro";
+		String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";  
+		String url = "jdbc:sqlserver://localhost:1433; DatabaseName = BBS";  
+		String DBUSER="Ting";
+		String PASSWORD="zt18798859427";
 		Class.forName(driverClass);
-		return DriverManager.getConnection(url, admin, passwd);
-	}
+		return DriverManager.getConnection(url,DBUSER,PASSWORD);		
+	 }
 
 }

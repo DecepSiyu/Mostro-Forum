@@ -192,7 +192,6 @@
 </html>
 
 <%@ page language="java"%>
-<%@ page import="com.mysql.jdbc.Driver"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="com.usrBean.*"%>
 
