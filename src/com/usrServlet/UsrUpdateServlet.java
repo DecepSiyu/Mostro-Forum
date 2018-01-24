@@ -68,15 +68,17 @@ public class UsrUpdateServlet extends HttpServlet {
 	public static User loadUsrMsg(Connection connection, String username) throws SQLException {
 		Statement statement = connection.createStatement();
 		ResultSet resultSet = statement
-				.executeQuery(String.format("SELECT * from web_routine.usr_info where usrname=\'%s\'", username));
-		resultSet.next();
+				.executeQuery(String.format("SELECT * from usr_info where usrname=\'%s\'", username));
 		User user = new User();
-		user.setBirthday(resultSet.getDate("birthday"));
-		user.setAdmin(resultSet.getBoolean("is_admin"));
-		user.setEmail(resultSet.getString("email").trim());
-		user.setPassword(resultSet.getString("passwd").trim());
-		user.setSex(resultSet.getString("sex").trim());
-		user.setUsrname(username);
+		while(resultSet.next())
+		{
+			user.setBirthday(resultSet.getDate("birthday"));
+			user.setAdmin(resultSet.getBoolean("is_admin"));
+			user.setEmail(resultSet.getString("email"));
+			user.setPassword(resultSet.getString("passwd").trim());
+			user.setSex(resultSet.getString("sex"));
+			user.setUsrname(username);
+		}
 		return user;
 	}
 
@@ -84,7 +86,7 @@ public class UsrUpdateServlet extends HttpServlet {
 		Statement statement = connection.createStatement();
 
 		statement.execute(String.format(
-				"UPDATE web_routine.usr_info SET email=\'%s\',sex=\'%s\',birthday=\'%s\' WHERE usrname=\'%s\';",
+				"UPDATE usr_info SET email=\'%s\',sex=\'%s\',birthday=\'%s\' WHERE usrname=\'%s\';",
 				user.getEmail(), user.getSex(), user.getBirthday(), user.getUsrname()));
 
 		System.out.println(

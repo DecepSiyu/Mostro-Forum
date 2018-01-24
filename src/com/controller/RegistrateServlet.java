@@ -2,6 +2,7 @@ package com.controller;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.servlet.ServletException;
@@ -18,12 +19,14 @@ public class RegistrateServlet extends HttpServlet {
 	private static final String failPage = "login.jsp";
 
 	/**
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public RegistrateServlet() {
+	public RegistrateServlet() throws ClassNotFoundException, SQLException {
 		super();
-		// TODO Auto-generated constructor stub
-	}
+		LoginServlet.connection = LoginServlet.getDateBaseConn();
+		}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -79,7 +82,7 @@ public class RegistrateServlet extends HttpServlet {
 			Connection connection = LoginServlet.connection;
 			Statement stmt = connection.createStatement();
 			String sql = "insert into usr_info (usrname, passwd,is_admin) values (\'" + usrname
-					+ "\',\'" + password + "\',false)";
+					+ "\',\'" + password + "\',0)";
 			stmt.execute(sql);
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());

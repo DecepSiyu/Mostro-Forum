@@ -53,7 +53,7 @@ public class ViewPostServlet extends HttpServlet {
 		try {
 			Connection connection = LoginServlet.connection;
 			Statement statement = connection.createStatement();
-			String sql = String.format("SELECT * from web_routine.post_info where post_id=\'%s\'", postID);
+			String sql = String.format("SELECT * from post_info where post_id=\'%s\'", postID);
 			ResultSet resultSet = statement.executeQuery(sql);
 			resultSet.next();
 

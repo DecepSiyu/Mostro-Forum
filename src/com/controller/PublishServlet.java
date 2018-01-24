@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,7 +22,7 @@ public class PublishServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final String successPage = "post.jsp";
+	private static final String successPage = "welcome.jsp";
 	private static final String failPage = "post.jsp";
 	private HttpSession session;
 	private HttpServletResponse response;
@@ -87,25 +88,27 @@ public class PublishServlet extends HttpServlet {
 			Statement statement = connection.createStatement();
 
 			ResultSet resultSet = statement
-					.executeQuery("SELECT plate_id FROM web_routine.plate_info WHERE name=\'" + platename + "\';");
+					.executeQuery("SELECT plate_id FROM plate_info WHERE name=\'" + platename + "\';");
 
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-			if (!resultSet.next()) {
+			String post_id, plate_id;
+			post_id=UUID.randomUUID().toString().replace("-", "");
+			plate_id=UUID.randomUUID().toString().replace("-", "");
+			if(!resultSet.next()) {
 				String sql = String.format(
-						"INSERT INTO `web_routine`.`post_info` "
-								+ "(`post_id`,`title`, `content`,`auther`,`plate_id`,`publish_time`)"
-								+ " values (LEFT(MD5(RAND()),10),\'%s\',\'%s\',\'%s\',LEFT(MD5(RAND()),10),\'%s\')",
-						title, content, username, simpleDateFormat.format(new java.util.Date()));
+						"INSERT INTO post_info "
+								+ "(post_id,title,content,auther,plate_id,publish_time)"
+								+ " values (\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\')",
+						post_id,title, content, username, plate_id,simpleDateFormat.format(new java.util.Date()));
 				statement.execute(sql);// 随机生成帖子ID和板块ID
 
-				sql = String.format("SELECT plate_id from `web_routine`.`post_info` WHERE title=\'%s\';", title);
+				sql = String.format("SELECT plate_id from post_info WHERE title=\'%s\';", title);
 				statement = connection.createStatement();
 				resultSet = statement.executeQuery(sql);// 找到刚刚生成的板块ID
 				resultSet.next();
 				String plateID = resultSet.getString(1);
 
-				sql = String.format("INSERT INTO `web_routine`.`plate_info` (`plate_id`,`name`) VALUES(\'%s\',\'%s\');",
+				sql = String.format("INSERT INTO plate_info (plate_id,name) VALUES(\'%s\',\'%s\');",
 						plateID, platename);
 				statement.execute(sql);// 生成板块
 				statement.close();
@@ -113,8 +116,8 @@ public class PublishServlet extends HttpServlet {
 				String plateID = resultSet.getString(1);
 
 				String sql = String.format(
-						"INSERT INTO web_routine.post_info "
-								+ "(`post_id`,`title`, `content`,`auther`,`plate_id`,`publish_time`)"
+						"INSERT INTO post_info "
+								+ "(post_id,title, content,auther,plate_id,publish_time)"
 								+ " values (LEFT(MD5(RAND()),10),\'%s\',\'%s\',\'%s\',\'%s\',\'%s\')",
 						title, content, username, plateID, simpleDateFormat.format(new java.util.Date()));
 

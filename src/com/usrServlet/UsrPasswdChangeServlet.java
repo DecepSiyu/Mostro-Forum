@@ -79,7 +79,7 @@ public class UsrPasswdChangeServlet extends HttpServlet {
 		try {
 			Connection connection = LoginServlet.connection;
 			Statement stmt = connection.createStatement();
-			String sql = "UPDATE web_routine.usr_info SET passwd=\'" + passwd + "\' where usrname=\'" + usrname + "\'";
+			String sql = "UPDATE usr_info SET passwd=\'" + passwd + "\' where usrname=\'" + usrname + "\'";
 			stmt.execute(sql);
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());

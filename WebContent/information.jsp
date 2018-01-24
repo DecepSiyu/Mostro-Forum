@@ -49,6 +49,8 @@
 
 	<!-- Navigation -->
 	<%@ include file="navigation.jsp"%>
+	<%@  page import= "com.controller.*"%>
+<%@  page import= "com.usrServlet.*"%>
 
 	<!-- Page Header -->
 	<header class="intro-header"
@@ -106,13 +108,8 @@
 				</form>
 
 				<%
-					String driverClass = "com.mysql.jdbc.Driver";
-					String url = "jdbc:mysql://localhost:3306/?user=root";
-					String DBUSER = "root";
-					String PASSWORD = "menhui2012";
 					try {
-						Class.forName(driverClass);
-						java.sql.Connection cn = DriverManager.getConnection(url, DBUSER, PASSWORD);
+						java.sql.Connection cn = LoginServlet.connection;
 						UsrUpdateServlet.loadUsrMsg(cn, user.getUsrname());
 					} catch (Exception ex) {
 						System.out.println(ex.getMessage());
@@ -132,21 +129,21 @@
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
 							<label>邮箱</label> <input type="text" class="form-control"
-								placeholder="邮箱：<%=user.getEmail()%>" name="email">
+								placeholder="邮箱：<%=user.getEmail()== null ? "":user.getEmail()%>" name="email">
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
 							<label>性别</label> <input type="text" class="form-control"
-								placeholder="性别：<%=user.getSex()%>" name="sex">
+								placeholder="性别：<%=user.getSex()== null ? "": user.getSex()%>" name="sex">
 							<p class="help-block text-danger"></p>
 						</div>
 					</div>
 					<div class="control-group">
 						<div class="form-group floating-label-form-group controls">
 							<label>生日</label> <input type="text" class="form-control"
-								placeholder="生日：<%=user.getBirthday().toString()%>"
+								placeholder="生日：<%=user.getBirthday()== null ? "": user.getBirthday()%>"
 								name="birthday">
 							<p class="help-block text-danger"></p>
 						</div>
