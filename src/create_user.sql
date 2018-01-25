@@ -1,25 +1,33 @@
 create schema web_routine;
 use web_routine;
 CREATE TABLE usr_info (
-    usrname CHAR(20) PRIMARY KEY,
-    sex CHAR(2),
+    usrname VARCHAR(20) PRIMARY KEY,
+    sex VARCHAR(2),
     birthday DATE,
-    email CHAR(25),
-    passwd CHAR(20) NOT NULL,
+    email VARCHAR(25),
+    passwd VARCHAR(20) NOT NULL,
     is_admin BOOL NOT NULL
 );
 
 CREATE TABLE plate_info (
     plate_id CHAR(10) PRIMARY KEY,
-    name CHAR(50) NOT NULL
+    name VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE post_info (
     post_id CHAR(10) PRIMARY KEY,
-    title CHAR(50) NOT NULL UNIQUE,
+    title VARCHAR(50) NOT NULL UNIQUE,
     content TEXT NOT NULL,
-    auther CHAR(20) REFERENCES usr_info.usrname,
+    auther VARCHAR(20) REFERENCES usr_info.usrname,
     plate_id CHAR(10) REFERENCES plate_info.plate_id,
+    publish_time DATE NOT NULL
+);
+
+CREATE TABLE comment_info (
+    comment_id CHAR(10) PRIMARY KEY,
+    post_id CHAR(10) REFERENCES post_info.post_id,
+    content TEXT NOT NULL,
+    auther VARCHAR(20) REFERENCES usr_info.usrname,
     publish_time DATE NOT NULL
 );
 
@@ -39,5 +47,5 @@ DROP USER 'mostro';
 drop table usr_info;
 drop table plate_info;
 drop table post_info;
-
+drop table comment_info
 drop schema web_routine
