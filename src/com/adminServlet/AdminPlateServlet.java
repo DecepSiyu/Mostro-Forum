@@ -2,7 +2,8 @@ package com.adminServlet;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -12,10 +13,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.controller.LoginServlet;
 import com.postBean.Plate;
 
 @WebServlet("/AdminRemovePlateServlet")
 public class AdminPlateServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	private static final String successPage = "search.jsp";
 
 	public AdminPlateServlet() {
 		super();
@@ -40,34 +44,50 @@ public class AdminPlateServlet extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		// ����ҳ����룺
-		// ɾ��������ݿ���룺
-	}
-
-	// ������������ʵ�������ݿ����ӹ���
-	public void removePlate() {
-		String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-		String url = "jdbc:sqlserver://localhost:1433; DatabaseName = BBSM";
-		String DBUSER = "Ting";
-		String PASSWORD = "zt18798859427";
+		String plateID = (String) request.getParameter("plate_id");
 		try {
-			Class.forName(driverClass);
-			Connection cn = DriverManager.getConnection(url, DBUSER, PASSWORD);
-			Statement stmt = cn.createStatement();
-			// String sql="SELECT usrname, password from usr_info where
-			// usrname=\'"+usrname+"\'";
-			// ResultSet rs=stmt.executeQuery(sql);
-			System.out.println("���ݿ����ӳɹ�");
-
-			cn.close();// �رղ���
-		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
-			System.out.println("�����쳣");
-			ex.printStackTrace();
+			removePlate(LoginServlet.connection, plateID);
+			response.sendRedirect(successPage);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
-	public static ArrayList<Plate> loadPlates(Connection connection) {
-		return null;
+	public void removePlate(Connection connection, String plateID) throws SQLException {
+		connection = LoginServlet.connection;
+		Statement stmt = connection.createStatement();
+		String sql = "delete from web_routine.plate_info where plate_id=\'" + plateID + "\'";
+		stmt.execute(sql);
+		System.out.printf("delete plate %s\n", plateID);
 	}
+
+	public static ArrayList<Plate> loadPlates(Connection connection) throws SQLException {
+		if (connection == null) {
+			return null;
+		}
+
+		ArrayList<Plate> arraylist = new ArrayList<Plate>();
+		Statement stmt = connection.createStatement();
+		String sql = "SELECT * from web_routine.plate_info ";
+		ResultSet rs = stmt.executeQuery(sql);
+		while (rs.next()) {
+			Plate plate = new Plate(rs.getString("plate_id"), rs.getString("name"));
+			arraylist.add(plate);
+		}
+		rs.close();
+		return arraylist;
+	}
+
+	public static int getPostNum(Connection connection, String plate_id) throws SQLException {
+		connection = LoginServlet.connection;
+		Statement stmt = connection.createStatement();
+		String sql = "SELECT count(*) from web_routine.post_info where plate_id=\'" + plate_id + "\'";
+		ResultSet rs = stmt.executeQuery(sql);
+		rs.next();
+		int sum = rs.getInt(1);
+		rs.close();
+		return sum;
+
+	}
+
 }

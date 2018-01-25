@@ -73,9 +73,9 @@ public class UsrUpdateServlet extends HttpServlet {
 		User user = new User();
 		user.setBirthday(resultSet.getDate("birthday"));
 		user.setAdmin(resultSet.getBoolean("is_admin"));
-		user.setEmail(resultSet.getString("email").trim());
-		user.setPassword(resultSet.getString("passwd").trim());
-		user.setSex(resultSet.getString("sex").trim());
+		user.setEmail(resultSet.getString("email"));
+		user.setPassword(resultSet.getString("passwd"));
+		user.setSex(resultSet.getString("sex"));
 		user.setUsrname(username);
 		return user;
 	}

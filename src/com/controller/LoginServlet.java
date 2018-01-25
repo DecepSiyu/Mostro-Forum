@@ -138,7 +138,6 @@ public class LoginServlet extends HttpServlet {
 		if ((user = checkLogin(username, passwd)) != null) {
 			session.setAttribute("username", username);
 			session.setAttribute("user", user);
-			session.setAttribute("posts", loadPosts(connection, 200));
 			System.out.println(username + " login");
 			response.sendRedirect(successPage);
 		} else {

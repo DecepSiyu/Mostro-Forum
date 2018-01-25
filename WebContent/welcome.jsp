@@ -70,7 +70,7 @@
 				<%@ page import="com.controller.*"%>
 				<%@ page import="java.sql.*"%>
 				<%
-					posts = LoginServlet.loadPosts(LoginServlet.connection, 200);
+					ArrayList<Post> posts = LoginServlet.loadPosts(LoginServlet.connection, 200);
 					session.setAttribute("posts", posts);
 					if (posts != null) {
 						for (int i = 0; i < posts.size(); i++) {

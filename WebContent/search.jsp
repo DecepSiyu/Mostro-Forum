@@ -71,23 +71,28 @@
 				<%@ page import="com.controller.*"%>
 				<%@ page import="java.sql.*"%>
 				<%
-					posts = LoginServlet.loadPosts(LoginServlet.connection, 200);
+					ArrayList<Post> posts = LoginServlet.loadPosts(LoginServlet.connection, 200);
 					ArrayList<Plate> plates = AdminPlateServlet.loadPlates(LoginServlet.connection);
 					session.setAttribute("plates", plates);
 					if (plates != null) {
 						for (int i = 0; i < plates.size(); i++) {
 				%>
-				<form id=<%=String.format("\"%s\"", posts.get(i).getPostID())%>
-					action="ViewPostServlet" method="get">
+				<form id=<%=String.format("\"%s\"", plates.get(i).getPlateID())%>
+					action="AdminRemovePlateServlet" method="post">
 					<div class="post-preview">
-						<a type="submit"				>
+						<a type="submit">
 							<h2 class="post-title"><%=plates.get(i).getName()%></h2>
-							<h3 class="post-subtitle"></h3> <input id="post_id_input"
-							name="post_id" style="display: none"
+							<p class="post-meta">
+								板块所有文章数目：
+								<%=AdminPlateServlet.getPostNum(LoginServlet.connection, plates.get(i).getPlateID())%></p>
+							<h3 class="post-subtitle"></h3> <input name="plate_id"
+							style="display: none"
 							value=<%=String.format("\"%s\"", plates.get(i).getPlateID())%>>
 						</a>
-						<p class="post-meta" >
-							<a href="#" onclick="document.getElementById(<%=String.format("\'%s\'", plates.get(i).getPlateID())%>).submit();">删除</a>					</p>
+						<p class="post-meta">
+							<a href="#"
+								onclick="document.getElementById(<%=String.format("\'%s\'", plates.get(i).getPlateID())%>).submit();">删除</a>
+						</p>
 					</div>
 				</form>
 				<%

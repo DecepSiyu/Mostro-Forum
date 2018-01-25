@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.usrBean.User;
+
 @WebServlet("/RegistrateServlet")
 public class RegistrateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -67,23 +69,31 @@ public class RegistrateServlet extends HttpServlet {
 			session.setAttribute("error", "两次输入密码不一致");
 			response.sendRedirect(failPage);
 		} else {
-			System.out.println("new user " + username + " registrate");
 			session.setAttribute("username", username);
-			storeRegInfo(username, passwd);
+			session.setAttribute("user", storeRegInfo(username, passwd));
+			System.out.println("new user " + username + " registrate");
 			response.sendRedirect(successPage);
 		}
 	}
 
-	public void storeRegInfo(String usrname, String password) {
+	public User storeRegInfo(String usrname, String password) {
+		User user = new User();
+		user.setUsrname(usrname);
+		user.setPassword(password);
+
 		try {
+			LoginServlet.connection = LoginServlet.getDateBaseConn();
 			Connection connection = LoginServlet.connection;
 			Statement stmt = connection.createStatement();
 			String sql = "insert into web_routine.usr_info (`usrname`, `passwd`,`is_admin`) values (\'" + usrname
 					+ "\',\'" + password + "\',false)";
 			stmt.execute(sql);
+
+			return user;
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 			ex.printStackTrace();
 		}
+		return user;
 	}
 }

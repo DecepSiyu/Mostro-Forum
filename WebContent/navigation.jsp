@@ -10,10 +10,9 @@
 	<%@ page import="com.usrBean.*"%>
 	<%@ page import="java.util.ArrayList"%>
 	<%
-		ArrayList<Post> posts = (ArrayList<Post>) session.getAttribute("posts");
 		String username = (String) session.getAttribute("username");
 		User user = (User) session.getAttribute("user");
-		if (username == null || username.equals("") || user == null || posts == null) {
+		if (username == null || username.equals("") || user == null) {
 			response.sendRedirect("login.jsp");
 		}
 	%>
